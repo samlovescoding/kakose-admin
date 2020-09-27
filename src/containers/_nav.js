@@ -17,6 +17,7 @@ export default [
   {
     _tag: "CSidebarNavItem",
     name: "Search Members",
+    to: "/members",
     icon: "cil-people",
   },
   {

@@ -63,8 +63,11 @@ const Users = React.lazy(() => import("./views/users/Users"));
 const User = React.lazy(() => import("./views/users/User"));
 
 const routes = [
+  //Main
   { path: "/", exact: true, name: "Home" },
   { path: "/members", name: "Members", component: Members },
+
+  // Bloatware
   { path: "/dashboard", name: "Dashboard", component: Dashboard },
   { path: "/theme", name: "Theme", component: Colors, exact: true },
   { path: "/theme/colors", name: "Colors", component: Colors },
