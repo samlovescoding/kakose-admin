@@ -1,6 +1,7 @@
 import React from "react";
 
 const Members = React.lazy(() => import("./views/admin/Members"));
+const AddMember = React.lazy(() => import("./views/admin/AddMember"));
 
 const Toaster = React.lazy(() =>
   import("./views/notifications/toaster/Toaster")
@@ -66,6 +67,7 @@ const routes = [
   //Main
   { path: "/", exact: true, name: "Home" },
   { path: "/members", name: "Members", component: Members },
+  { path: "/addmember", name: "Add Member", component: AddMember },
 
   // Bloatware
   { path: "/dashboard", name: "Dashboard", component: Dashboard },

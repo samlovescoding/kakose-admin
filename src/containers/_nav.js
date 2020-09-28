@@ -23,6 +23,7 @@ export default [
   {
     _tag: "CSidebarNavItem",
     name: "Add Member",
+    to: "/addmember",
     icon: "cil-user-plus",
   },
 
