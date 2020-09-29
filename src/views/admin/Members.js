@@ -8,8 +8,8 @@ import {
   CDataTable,
   CInput,
   CFormText,
-  CLabel,
-  CButtonGroup,
+  CInputGroup,
+  CInputGroupAppend,
   CButton,
 } from "@coreui/react";
 
@@ -18,22 +18,23 @@ const Members = () => {
     <>
       <CRow className="mb-3">
         <CCol xs="12" lg="6">
-          <CLabel htmlFor="text-input">Search Member</CLabel>
-
-          <CButtonGroup>
+          <CInputGroup>
             <CInput
               id="text-input"
               name="text-input"
               placeholder="Your input query."
+              lg="6"
             />
-            <CButton color="primary">Search</CButton>
-          </CButtonGroup>
+            <CInputGroupAppend>
+              <CButton color="primary">Search Members</CButton>
+            </CInputGroupAppend>
+          </CInputGroup>
           <CFormText>
             Search by membership type, name or phone number.
           </CFormText>
         </CCol>
         <CCol xs="12" lg="6" className="d-flex flex-row justify-content-end">
-          <CButton color="success" className="align-self-center">
+          <CButton color="success" className="align-self-start">
             Add New
           </CButton>
         </CCol>
