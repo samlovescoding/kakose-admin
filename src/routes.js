@@ -1,6 +1,7 @@
 import React from "react";
 
 const TodayBookings = React.lazy(() => import("./dashboard/TodayBookings"));
+const Inventory = React.lazy(() => import("./dashboard/Inventory"));
 const BookingsHistory = React.lazy(() => import("./dashboard/BookingsHistory"));
 const Members = React.lazy(() => import("./dashboard/Members"));
 const NewMember = React.lazy(() => import("./dashboard/NewMember"));
@@ -18,70 +19,89 @@ const routes = [
   { path: "/", exact: true, name: "Home" },
   {
     path: "/bookings/today",
+    exact: true,
     name: "Today Bookings",
     component: TodayBookings,
   },
   {
     path: "/bookings",
+    exact: true,
     name: "Bookings History",
     component: BookingsHistory,
   },
   // Members
   {
     path: "/members",
+    exact: true,
     name: "Members",
     component: Members,
   },
   {
     path: "/members/create",
+    exact: true,
     name: "New Member",
     component: NewMember,
   },
   // Pro Shop
   {
     path: "/products",
+    exact: true,
     name: "Products",
     component: Products,
   },
   {
     path: "/products/create",
+    exact: true,
     name: "New Product",
     component: NewProduct,
   },
   {
     path: "/orders/today",
+    exact: true,
     name: "Today Orders",
     component: TodayOrders,
   },
   {
+    path: "/inventory",
+    exact: true,
+    name: "Inventory",
+    component: Inventory,
+  },
+  {
     path: "/orders",
+    exact: true,
     name: "Order History",
     component: OrderHistory,
   },
   // Settings
   {
     path: "/settings/club",
+    exact: true,
     name: "Club Settings",
     component: ClubSettings,
   },
   {
     path: "/settings/profile",
+    exact: true,
     name: "Profile Settings",
     component: ProfileSettings,
   },
   {
     path: "/users",
+    exact: true,
     name: "Club Admins",
     component: ClubAdmins,
   },
   // Admin
   {
     path: "/clubs",
+    exact: true,
     name: "Clubs",
     component: Clubs,
   },
   {
-    path: "/club/create",
+    path: "/clubs/create",
+    exact: true,
     name: "New Club",
     component: NewClub,
   },

@@ -3,7 +3,7 @@ export default [
     _tag: "CSidebarNavItem",
     name: "Today Bookings",
     to: "/bookings/today",
-    icon: "cil-bookmark",
+    icon: "cil-golf",
   },
   {
     _tag: "CSidebarNavItem",
@@ -48,6 +48,12 @@ export default [
     name: "Today Orders",
     to: "/orders/today",
     icon: "cil-cart",
+  },
+  {
+    _tag: "CSidebarNavItem",
+    name: "Inventory",
+    to: "/inventory",
+    icon: "cil-inbox",
   },
   {
     _tag: "CSidebarNavItem",
