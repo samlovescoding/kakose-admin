@@ -7,9 +7,11 @@ import {
 import React, { useEffect, useState } from "react";
 import axios from "../services/axios";
 import config from "../config";
+import { useHistory } from "react-router-dom";
 function Members() {
   // Stateful Hooks
   const [members, setMembers] = useState([]);
+  const history = useHistory();
 
   // Effects and Events
   async function loadMembers() {
@@ -78,11 +80,22 @@ function Members() {
               return (
                 <td>
                   <CButton
+                    color="primary"
+                    className="mr-1"
+                    onClick={(e) => {
+                      history.push(
+                        "/members/" + item._id + "/edit"
+                      );
+                    }}
+                  >
+                    Edit
+                  </CButton>
+                  <CButton
+                    color="danger"
                     onClick={async (e) => {
                       await deleteMember(item._id);
                       await loadMembers();
                     }}
-                    color="danger"
                   >
                     Delete
                   </CButton>
