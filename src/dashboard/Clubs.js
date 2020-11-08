@@ -4,13 +4,15 @@ import {
   CCard,
   CCardBody,
   CDataTable,
-  CPagination,
 } from "@coreui/react";
 import axios from "../services/axios";
+import DashboardLayout from "../layouts/DashboardLayout";
+import { useHistory } from "react-router-dom";
 
 function Clubs() {
   // Stateful Hooks
   const [clubs, setClubs] = useState([]);
+  const history = useHistory();
 
   // Events and Effects
   async function loadClubs() {
@@ -27,6 +29,7 @@ function Clubs() {
       const response = await axios.delete("/clubs", {
         _id: id,
       });
+      loadClubs();
       console.log("Club Deleted");
     } catch (e) {
       console.error(e);
@@ -38,37 +41,56 @@ function Clubs() {
   }, []);
 
   return (
-    <CCard>
-      <CCardBody>
-        <CDataTable
-          items={clubs}
-          fields={["name", "slug", "createdAt", "control"]}
-          tableFilter
-          itemsPerPageSelect
-          itemsPerPage={10}
-          hover
-          sorter
-          pagination
-          scopedSlots={{
-            control: (item, index) => {
-              return (
-                <td>
-                  <CButton
-                    color="danger"
-                    onClick={(e) => {
-                      deleteClub(item._id);
-                      loadClubs();
-                    }}
-                  >
-                    Delete
-                  </CButton>
-                </td>
-              );
-            },
-          }}
-        />
-      </CCardBody>
-    </CCard>
+    <DashboardLayout>
+      <CCard>
+        <CCardBody>
+          <CDataTable
+            items={clubs}
+            fields={[
+              "name",
+              "slug",
+              "createdAt",
+              "control",
+            ]}
+            tableFilter
+            itemsPerPageSelect
+            itemsPerPage={10}
+            hover
+            sorter
+            pagination
+            scopedSlots={{
+              control: (item, index) => {
+                return (
+                  <td>
+                    <CButton
+                      color="warning"
+                      onClick={(e) => {
+                        history.push(
+                          "/clubs/" +
+                            item._id +
+                            "/user-create"
+                        );
+                      }}
+                      className="mr-1"
+                    >
+                      Add User
+                    </CButton>
+                    <CButton
+                      color="danger"
+                      onClick={(e) => {
+                        deleteClub(item._id);
+                      }}
+                    >
+                      Delete
+                    </CButton>
+                  </td>
+                );
+              },
+            }}
+          />
+        </CCardBody>
+      </CCard>
+    </DashboardLayout>
   );
 }
 

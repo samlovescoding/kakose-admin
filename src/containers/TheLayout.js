@@ -1,18 +1,33 @@
 import React from "react";
-import { TheContent, TheSidebar, TheFooter, TheHeader } from "./index";
+import { Redirect } from "react-router-dom";
+import useUser from "../hooks/useUser";
+import {
+  TheContent,
+  TheSidebar,
+  TheFooter,
+  TheHeader,
+} from "./index";
 
 const TheLayout = () => {
+  const { user } = useUser();
+
   return (
-    <div className="c-app c-default-layout">
-      <TheSidebar />
-      <div className="c-wrapper">
-        <TheHeader />
-        <div className="c-body">
-          <TheContent />
+    <>
+      {user ? (
+        <div className="c-app c-default-layout">
+          <TheSidebar />
+          <div className="c-wrapper">
+            <TheHeader />
+            <div className="c-body">
+              <TheContent />
+            </div>
+            <TheFooter />
+          </div>
         </div>
-        <TheFooter />
-      </div>
-    </div>
+      ) : (
+        <Redirect to="/" />
+      )}
+    </>
   );
 };
 

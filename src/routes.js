@@ -39,6 +39,9 @@ const ProfileSettings = React.lazy(() =>
 const ClubAdmins = React.lazy(() =>
   import("./dashboard/ClubAdmins")
 );
+const ClubUsersNew = React.lazy(() =>
+  import("./dashboard/ClubUsersNew")
+);
 const Clubs = React.lazy(() => import("./dashboard/Clubs"));
 const NewClub = React.lazy(() =>
   import("./dashboard/NewClub")
@@ -139,6 +142,11 @@ const routes = [
     exact: true,
     name: "New Club",
     component: NewClub,
+  },
+  {
+    path: "/clubs/:id/user-create",
+    exact: true,
+    component: ClubUsersNew,
   },
 ];
 

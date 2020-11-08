@@ -1,7 +1,8 @@
 import React from "react";
+import DashboardLayout from "../layouts/DashboardLayout";
 
 function TodayOrders() {
-  return <div>Today Orders</div>;
+  return <DashboardLayout>Today Orders</DashboardLayout>;
 }
 
 export default TodayOrders;

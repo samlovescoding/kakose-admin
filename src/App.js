@@ -1,5 +1,14 @@
-import React, { Component, useContext, useState } from "react";
-import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
+import React, {
+  Component,
+  useContext,
+  useState,
+} from "react";
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch,
+} from "react-router-dom";
 
 import "./scss/style.scss";
 
@@ -10,18 +19,29 @@ const loading = (
 );
 
 // Containers
-const TheLayout = React.lazy(() => import("./containers/TheLayout"));
+const TheLayout = React.lazy(() =>
+  import("./containers/TheLayout")
+);
 
 // Pages
-const Login = React.lazy(() => import("./views/pages/login/Login"));
+const Login = React.lazy(() => import("./dashboard/Login"));
 
 const App = () => {
   return (
     <Router>
       <React.Suspense fallback={loading}>
         <Switch>
-          <Route exact path="/" name="Login Page" render={(props) => <Login {...props} />} />
-          <Route path="/" name="Home" render={(props) => <TheLayout {...props} />} />
+          <Route
+            exact
+            path="/"
+            name="Login Page"
+            render={(props) => <Login {...props} />}
+          />
+          <Route
+            path="/"
+            name="Home"
+            render={(props) => <TheLayout {...props} />}
+          />
         </Switch>
       </React.Suspense>
     </Router>

@@ -1,7 +1,8 @@
 import React from "react";
+import DashboardLayout from "../layouts/DashboardLayout";
 
 function BookingHistory() {
-  return <div>Booking History</div>;
+  return <DashboardLayout>Booking History</DashboardLayout>;
 }
 
 export default BookingHistory;

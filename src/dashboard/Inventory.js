@@ -1,7 +1,8 @@
 import React from "react";
+import DashboardLayout from "../layouts/DashboardLayout";
 
 function Inventory() {
-  return <div>Inventory</div>;
+  return <DashboardLayout>Inventory</DashboardLayout>;
 }
 
 export default Inventory;

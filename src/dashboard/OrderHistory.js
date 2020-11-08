@@ -1,7 +1,8 @@
 import React from "react";
+import DashboardLayout from "../layouts/DashboardLayout";
 
 function OrderHistory() {
-  return <div>Order History</div>;
+  return <DashboardLayout>Order History</DashboardLayout>;
 }
 
 export default OrderHistory;

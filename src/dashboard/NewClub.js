@@ -63,7 +63,7 @@ function NewClub() {
                 validationSchema={validationSchema}
                 onSubmit={handleCreate}
               >
-                {({ values, handleSubmit }) => (
+                {({ handleSubmit }) => (
                   <CForm onSubmit={handleSubmit}>
                     <CFormGroup>
                       <CLabel>Name</CLabel>

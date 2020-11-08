@@ -31,18 +31,7 @@ function MembersEdit() {
     "Somebody Else",
   ];
   const [initialValues, setInitialValues] = useState();
-  // {
-  //   name: "",
-  //   email: "",
-  //   password: "",
-  //   sex: "Male",
-  //   address: "",
-  //   postalCode: "",
-  //   phoneNumber: "",
-  //   memberType: memberTypes[0],
-  //   dateOfBirth: "",
-  //   memberSince: "",
-  // }
+
   const validationSchema = yup.object({
     name: yup.string().required(),
     email: yup.string().email().required(),

@@ -1,18 +1,22 @@
 import React, { useContext } from "react";
 import {
-  CBadge,
   CDropdown,
   CDropdownItem,
   CDropdownMenu,
   CDropdownToggle,
-  CImg,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import useUser from "../hooks/useUser";
-import axios from "../services/axios";
+import { useHistory } from "react-router-dom";
+
 const TheHeaderDropdown = () => {
-  const { user } = useUser();
-  async function handleLogout() {}
+  const { user, removeUser } = useUser();
+  const history = useHistory();
+
+  async function handleLogout() {
+    removeUser();
+    history.push("/");
+  }
   return (
     <CDropdown
       inNav

@@ -1,4 +1,8 @@
-export default [
+import useUser from "../hooks/useUser";
+
+const { user } = useUser();
+
+const clubSidebar = [
   {
     _tag: "CSidebarNavItem",
     name: "Today Bookings",
@@ -51,12 +55,6 @@ export default [
   },
   {
     _tag: "CSidebarNavItem",
-    name: "Inventory",
-    to: "/inventory",
-    icon: "cil-inbox",
-  },
-  {
-    _tag: "CSidebarNavItem",
     name: "Order History",
     to: "/orders",
     icon: "cil-chart",
@@ -83,6 +81,9 @@ export default [
     to: "/users",
     icon: "cil-people",
   },
+];
+
+const adminSidebar = [
   {
     _tag: "CSidebarNavTitle",
     _children: ["Admin"],
@@ -100,3 +101,11 @@ export default [
     icon: "cil-plus",
   },
 ];
+
+let sidebar = clubSidebar;
+
+if (user.role === "admin") {
+  sidebar = adminSidebar;
+}
+
+export default sidebar;

@@ -1,7 +1,10 @@
 import React from "react";
+import DashboardLayout from "../layouts/DashboardLayout";
 
 function ProfileSettings() {
-  return <div>Profile Settings</div>;
+  return (
+    <DashboardLayout>Profile Settings</DashboardLayout>
+  );
 }
 
 export default ProfileSettings;

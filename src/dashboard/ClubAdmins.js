@@ -1,7 +1,8 @@
 import React from "react";
+import DashboardLayout from "../layouts/DashboardLayout";
 
 function ClubAdmins() {
-  return <div>Club Admins</div>;
+  return <DashboardLayout>Club Admins</DashboardLayout>;
 }
 
 export default ClubAdmins;
