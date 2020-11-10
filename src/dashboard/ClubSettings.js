@@ -58,16 +58,20 @@ function ClubSettings() {
         club_closing_time: club.club_closing_time,
       });
     } catch (e) {
-      console.error(e.response.data);
+      console.error(e);
       setError(e.response.data.error.message);
     }
   }
 
   async function handleUpdate(values) {
     try {
-      //
+      let response = await axios.patch(
+        "/admin/club-settings",
+        values
+      );
+      console.log(response.data);
     } catch (e) {
-      console.error(e.response.data);
+      console.error(e);
       setError(e.response.data.error.message);
     }
   }
@@ -93,15 +97,19 @@ function ClubSettings() {
                   values,
                   handleSubmit,
                   setFieldValue,
+                  isSubmitting,
                 }) => {
                   function getTimeFieldAsNumeric(key) {
                     const value = values[key];
-                    const hours = value / 60;
-                    const minutes = value % 60;
-                    const meridiem = "AM";
-                    return (
-                      hours + ":" + minutes + " " + meridiem
-                    );
+                    let hours = Math.floor(value / 60);
+                    let minutes = Math.floor(value % 60);
+                    if (hours < 10) {
+                      hours = "0" + hours;
+                    }
+                    if (minutes < 10) {
+                      minutes = "0" + minutes;
+                    }
+                    return hours + ":" + minutes;
                   }
 
                   function setTimeFieldAsNumeric(event) {
@@ -110,7 +118,10 @@ function ClubSettings() {
                       minutes,
                     ] = event.target.value.split(":");
 
-                    const value = hours * 60 + minutes;
+                    const value =
+                      parseInt(hours) * 60 +
+                      parseInt(minutes);
+
                     setFieldValue(
                       event.target.getAttribute("name"),
                       value
@@ -118,8 +129,7 @@ function ClubSettings() {
                   }
 
                   return (
-                    <CForm>
-                      {/* {JSON.stringify(values, null, 2)} */}
+                    <CForm onSubmit={handleSubmit}>
                       {error ? (
                         <CAlert color="danger">
                           {error}
@@ -132,6 +142,7 @@ function ClubSettings() {
                         <Field
                           as={CInput}
                           name="tee_time_length"
+                          disabled
                         />
                         <ErrorMessage
                           name="tee_time_length"
@@ -189,7 +200,11 @@ function ClubSettings() {
                         />
                       </CFormGroup>
                       <CFormGroup>
-                        <CButton color="primary">
+                        <CButton
+                          color="primary"
+                          type="submit"
+                          disabled={isSubmitting}
+                        >
                           Save
                         </CButton>
                       </CFormGroup>
