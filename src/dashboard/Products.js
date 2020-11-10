@@ -34,6 +34,9 @@ function Products() {
               "name",
               "price",
               "category",
+              "quantity",
+              "unit",
+              "category",
               "control",
             ]}
             tableFilter

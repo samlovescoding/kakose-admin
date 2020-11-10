@@ -66,7 +66,7 @@ const Login = () => {
       );
       history.push(config.LOGIN_REDIRECT);
     } catch (e) {
-      setResponseError(e.response.data.error);
+      setResponseError(e.response.data.error.message);
     }
   }
 

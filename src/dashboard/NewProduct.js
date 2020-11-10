@@ -16,17 +16,23 @@ import CreatableSelect from "react-select/creatable";
 import { ErrorMessage, Field, Formik } from "formik";
 import * as yup from "yup";
 import axios from "../services/axios";
+import { useHistory } from "react-router-dom";
 
 const productCategories = [
   { label: "Food", value: "Food" },
 ];
 
 function NewProduct() {
+  const history = useHistory();
+
   const initialValues = {
     name: "",
-    price: "",
+    price: 1,
     category: [],
+    quantity: 1,
+    unit: "",
   };
+
   const validationSchema = yup.object({
     name: yup.string().required().label("Name"),
     price: yup
@@ -45,6 +51,8 @@ function NewProduct() {
       .min(1)
       .required()
       .label("Category"),
+    quantity: yup.number().required().label("Quantity"),
+    unit: yup.string().required(),
   });
 
   async function handleCreate(values) {
@@ -53,6 +61,7 @@ function NewProduct() {
         "/products",
         values
       );
+      history.push("/products");
       console.log(response.data);
     } catch (e) {
       console.error(e.response.data);
@@ -65,7 +74,7 @@ function NewProduct() {
         <CCol>
           <CCard>
             <CCardHeader>
-              Add New Item to Pro Shop
+              Add New Product to Pro Shop
             </CCardHeader>
             <CCardBody>
               <Formik
@@ -73,11 +82,7 @@ function NewProduct() {
                 validationSchema={validationSchema}
                 onSubmit={handleCreate}
               >
-                {({
-                  values,
-                  handleSubmit,
-                  setFieldValue,
-                }) => (
+                {({ handleSubmit, setFieldValue }) => (
                   <CForm onSubmit={handleSubmit}>
                     <CFormGroup>
                       <CLabel>Name</CLabel>
@@ -99,6 +104,16 @@ function NewProduct() {
                         options={productCategories}
                       />
                       <ErrorMessage name="category" />
+                    </CFormGroup>
+                    <CFormGroup>
+                      <CLabel>Stock</CLabel>
+                      <Field name="quantity" as={CInput} />
+                      <ErrorMessage name="quantity" />
+                    </CFormGroup>
+                    <CFormGroup>
+                      <CLabel>Units (Plural)</CLabel>
+                      <Field name="unit" as={CInput} />
+                      <ErrorMessage name="unit" />
                     </CFormGroup>
                     <CFormGroup>
                       <CButton

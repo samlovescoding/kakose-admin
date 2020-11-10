@@ -37,7 +37,7 @@ const clubSidebar = [
   },
   {
     _tag: "CSidebarNavItem",
-    name: "Products",
+    name: "Inventory",
     to: "/products",
     icon: "cil-bank",
   },
@@ -104,8 +104,12 @@ const adminSidebar = [
 
 let sidebar = clubSidebar;
 
-if (user.role === "admin") {
-  sidebar = adminSidebar;
+if (user) {
+  if (user.role === "admin") {
+    sidebar = adminSidebar;
+  }
+} else {
+  window.location = "/";
 }
 
 export default sidebar;

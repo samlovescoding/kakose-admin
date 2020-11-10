@@ -60,7 +60,7 @@ const Login = () => {
       );
       window.location = config.LOGIN_REDIRECT;
     } catch (e) {
-      setResponseError(e.response.data.error);
+      setResponseError(e.response.data.error.message);
     }
   }
 

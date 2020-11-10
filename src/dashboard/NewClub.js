@@ -22,14 +22,28 @@ import { useHistory } from "react-router-dom";
 const initialValues = {
   name: "",
   slug: "",
+  tee_time_length: 30,
+  tee_time_max_bookings: 4,
 };
 
 const validationSchema = yup.object({
   name: yup
     .string()
     .min(3, "Club Name must be greater than 3 characters.")
-    .required("Club name is required"),
-  slug: yup.string().required().lowercase().min(3).max(12),
+    .required("Club name is required")
+    .label("Name"),
+  slug: yup
+    .string()
+    .required()
+    .lowercase()
+    .min(3)
+    .max(12)
+    .label("Slug"),
+  tee_time_length: yup.number().required().label("Length"),
+  tee_time_max_bookings: yup
+    .number()
+    .required()
+    .label("Max Bookings"),
 });
 
 function NewClub() {
@@ -87,6 +101,36 @@ function NewClub() {
                       />
                       <ErrorMessage
                         name="slug"
+                        component="div"
+                        className="text-danger"
+                      />
+                    </CFormGroup>
+                    <CFormGroup>
+                      <CLabel>
+                        Tee Time Length (in minutes)
+                      </CLabel>
+                      <Field
+                        as={CInput}
+                        name="tee_time_length"
+                        type="number"
+                      />
+                      <ErrorMessage
+                        name="tee_time_length"
+                        component="div"
+                        className="text-danger"
+                      />
+                    </CFormGroup>
+                    <CFormGroup>
+                      <CLabel>
+                        Tee Time Max Bookings per Slot
+                      </CLabel>
+                      <Field
+                        as={CInput}
+                        name="tee_time_max_bookings"
+                        disabled
+                      />
+                      <ErrorMessage
+                        name="tee_time_max_bookings"
                         component="div"
                         className="text-danger"
                       />
