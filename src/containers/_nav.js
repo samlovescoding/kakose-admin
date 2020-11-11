@@ -5,16 +5,16 @@ const { user } = useUser();
 const clubSidebar = [
   {
     _tag: "CSidebarNavItem",
-    name: "Today Bookings",
-    to: "/bookings/today",
+    name: "Tee Times",
+    to: "/bookings",
     icon: "cil-golf",
   },
-  {
-    _tag: "CSidebarNavItem",
-    name: "Booking History",
-    to: "/bookings",
-    icon: "cil-book",
-  },
+  // {
+  //   _tag: "CSidebarNavItem",
+  //   name: "Booking History",
+  //   to: "/bookings",
+  //   icon: "cil-book",
+  // },
   {
     _tag: "CSidebarNavTitle",
     _children: ["Members"],
@@ -58,12 +58,6 @@ const clubSidebar = [
     name: "New Product",
     to: "/products/create",
     icon: "cil-basket",
-  },
-  {
-    _tag: "CSidebarNavItem",
-    name: "Today Orders",
-    to: "/orders/today",
-    icon: "cil-cart",
   },
   {
     _tag: "CSidebarNavItem",

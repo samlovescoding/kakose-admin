@@ -73,6 +73,15 @@ function Members() {
                 return (
                   <td>
                     <CButton
+                      color="primary"
+                      className="mr-1"
+                      onClick={(e) => {
+                        history.push("/members/" + item._id + "/book");
+                      }}
+                    >
+                      Book
+                    </CButton>
+                    <CButton
                       color="warning"
                       className="mr-1"
                       onClick={(e) => {

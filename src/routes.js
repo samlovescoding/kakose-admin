@@ -50,6 +50,7 @@ const routes = [
     name: "Bookings History",
     component: Bookings,
   },
+
   // Members
   {
     path: "/members",

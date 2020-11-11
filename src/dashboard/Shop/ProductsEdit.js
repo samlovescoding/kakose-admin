@@ -8,10 +8,11 @@ import { useHistory, useParams } from "react-router-dom";
 // Custom Imports
 import axios from "../../services/axios";
 import DashboardLayout from "../../layouts/DashboardLayout";
-import productCategories from "../../stores/productCategories";
 
 function NewProduct() {
   // Stateful Hooks
+  const [productCategories, setProductCategories] = useState([]);
+
   const history = useHistory();
 
   const { id } = useParams();
@@ -68,7 +69,13 @@ function NewProduct() {
     }
   }
 
+  async function loadProductCategories() {
+    const response = await axios.get("/admin/product-types");
+    setProductCategories(response.data);
+  }
+
   useEffect(() => {
+    loadProductCategories();
     loadProduct();
   }, []);
 

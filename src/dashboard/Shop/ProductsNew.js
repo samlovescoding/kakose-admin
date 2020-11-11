@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { CButton, CCard, CCardBody, CCardHeader, CCol, CForm, CFormGroup, CInput, CLabel, CRow } from "@coreui/react";
 import { ErrorMessage, Field, Formik } from "formik";
 import CreatableSelect from "react-select/creatable";
@@ -8,11 +8,12 @@ import { useHistory } from "react-router-dom";
 // Custom Imports
 import DashboardLayout from "../../layouts/DashboardLayout";
 import axios from "../../services/axios";
-import productCategories from "../../stores/productCategories";
 
 function NewProduct() {
   // Stateful Hooks
   const history = useHistory();
+
+  const [productCategories, setProductCategories] = useState([]);
 
   const initialValues = {
     name: "",
@@ -50,6 +51,15 @@ function NewProduct() {
       console.error(e.response.data);
     }
   }
+
+  async function loadProductCategories() {
+    const response = await axios.get("/admin/product-types");
+    setProductCategories(response.data);
+  }
+
+  useEffect(() => {
+    loadProductCategories();
+  }, []);
 
   return (
     <DashboardLayout>
