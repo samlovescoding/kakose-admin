@@ -32,6 +32,18 @@ const clubSidebar = [
     icon: "cil-user-plus",
   },
   {
+    _tag: "CSidebarNavItem",
+    name: "Member Types",
+    to: "/member-types",
+    icon: "cil-people",
+  },
+  {
+    _tag: "CSidebarNavItem",
+    name: "New Member Type",
+    to: "/member-types/create",
+    icon: "cil-user-plus",
+  },
+  {
     _tag: "CSidebarNavTitle",
     _children: ["Pro Shop"],
   },
@@ -75,6 +87,13 @@ const clubSidebar = [
     to: "/settings/profile",
     icon: "cil-cog",
   },
+];
+
+const clubAdminSidebar = [
+  {
+    _tag: "CSidebarNavTitle",
+    _children: ["Admin Panel"],
+  },
   {
     _tag: "CSidebarNavItem",
     name: "Users",
@@ -85,7 +104,7 @@ const clubSidebar = [
     _tag: "CSidebarNavItem",
     name: "New User",
     to: "/users/create",
-    icon: "cil-people",
+    icon: "cil-user-plus",
   },
 ];
 
@@ -113,6 +132,9 @@ let sidebar = clubSidebar;
 if (user) {
   if (user.role === "admin") {
     sidebar = adminSidebar;
+  }
+  if (user.role === "club_admin") {
+    sidebar = [...clubSidebar, ...clubAdminSidebar];
   }
 } else {
   window.location = "/";

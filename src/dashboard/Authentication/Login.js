@@ -18,9 +18,9 @@ import {
 import CIcon from "@coreui/icons-react";
 import { Formik, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
-import axios from "../services/axios";
+import axios from "../../services/axios";
 
-import config from "../config";
+import config from "../../config";
 
 const initialValues = {
   email: "",
@@ -32,9 +32,7 @@ const validationSchema = yup.object({
     .string()
     .email("Please enter a valid email.")
     .required("Please enter a email."),
-  password: yup
-    .string()
-    .required("Please enter a password."),
+  password: yup.string().required("Please enter a password."),
 });
 
 const Login = () => {
@@ -50,17 +48,15 @@ const Login = () => {
 
   async function handleLogin(payload) {
     try {
-      let request = await axios.post(
-        "/users/login",
-        payload
-      );
-      localStorage.setItem(
-        "user",
-        JSON.stringify(request.data)
-      );
+      let request = await axios.post("/users/login", payload);
+      localStorage.setItem("user", JSON.stringify(request.data));
       window.location = config.LOGIN_REDIRECT;
     } catch (e) {
-      setResponseError(e.response.data.error.message);
+      if (e.response.data.error.message) {
+        setResponseError(e.response.data.error.message);
+      } else if (e.response.data.error) {
+        setResponseError(e.response.data.error);
+      }
     }
   }
 
@@ -75,10 +71,7 @@ const Login = () => {
                   <Formik
                     initialValues={initialValues}
                     validationSchema={validationSchema}
-                    onSubmit={(
-                      values,
-                      { setSubmitting, resetForm }
-                    ) => {
+                    onSubmit={(values, { setSubmitting, resetForm }) => {
                       setResponseError(null);
                       setSubmitting(true);
                       handleLogin(values);
@@ -86,21 +79,12 @@ const Login = () => {
                       setSubmitting(false);
                     }}
                   >
-                    {({
-                      values,
-                      isSubmitting,
-                      handleSubmit,
-                    }) => (
+                    {({ values, isSubmitting, handleSubmit }) => (
                       <CForm onSubmit={handleSubmit}>
                         <h1>Login</h1>
-                        <p className="text-muted">
-                          Sign In to your account
-                        </p>
+                        <p className="text-muted">Sign In to your account</p>
                         {responseError ? (
-                          <CAlert
-                            className="mb-3"
-                            color="danger"
-                          >
+                          <CAlert className="mb-3" color="danger">
                             {responseError}
                           </CAlert>
                         ) : null}

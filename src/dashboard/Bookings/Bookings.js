@@ -1,7 +1,11 @@
 import React from "react";
-import DashboardLayout from "../layouts/DashboardLayout";
+
+// Custom Imports
+import DashboardLayout from "../../layouts/DashboardLayout";
 
 function BookingHistory() {
+  // Stateful Hooks
+  // Effects and Events
   return <DashboardLayout>Booking History</DashboardLayout>;
 }
 

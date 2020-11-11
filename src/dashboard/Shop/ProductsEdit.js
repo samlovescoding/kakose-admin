@@ -1,45 +1,32 @@
-import {
-  CButton,
-  CCard,
-  CCardBody,
-  CCardHeader,
-  CCol,
-  CForm,
-  CFormGroup,
-  CInput,
-  CLabel,
-  CRow,
-} from "@coreui/react";
-import React from "react";
-import DashboardLayout from "../layouts/DashboardLayout";
+import { CButton, CCard, CCardBody, CCardHeader, CCol, CForm, CFormGroup, CInput, CLabel, CRow } from "@coreui/react";
+import React, { useEffect, useState } from "react";
 import CreatableSelect from "react-select/creatable";
 import { ErrorMessage, Field, Formik } from "formik";
 import * as yup from "yup";
-import axios from "../services/axios";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 
-const productCategories = [
-  { label: "Food", value: "Food" },
-];
+// Custom Imports
+import axios from "../../services/axios";
+import DashboardLayout from "../../layouts/DashboardLayout";
+import productCategories from "../../stores/productCategories";
 
 function NewProduct() {
+  // Stateful Hooks
   const history = useHistory();
 
-  const initialValues = {
+  const { id } = useParams();
+
+  const [initialValues, setInitialValues] = useState({
     name: "",
-    price: 1,
+    price: "",
     category: [],
-    quantity: 1,
+    quantity: "",
     unit: "",
-  };
+  });
 
   const validationSchema = yup.object({
     name: yup.string().required().label("Name"),
-    price: yup
-      .number()
-      .positive()
-      .required()
-      .label("Price"),
+    price: yup.number().positive().required().label("Price"),
     category: yup
       .array()
       .of(
@@ -55,34 +42,50 @@ function NewProduct() {
     unit: yup.string().required(),
   });
 
-  async function handleCreate(values) {
+  // Effects and Events
+  async function handleSave(values) {
     try {
-      const response = await axios.post(
-        "/products",
-        values
-      );
+      const response = await axios.patch("/products/" + id, values);
       history.push("/products");
-      console.log(response.data);
     } catch (e) {
       console.error(e.response.data);
     }
   }
+
+  async function loadProduct() {
+    try {
+      const { data: product } = await axios.get("/products/" + id);
+
+      setInitialValues({
+        name: product.name,
+        price: product.price,
+        category: product.category,
+        quantity: product.quantity,
+        unit: product.unit,
+      });
+    } catch (e) {
+      console.error(e.response.data);
+    }
+  }
+
+  useEffect(() => {
+    loadProduct();
+  }, []);
 
   return (
     <DashboardLayout>
       <CRow>
         <CCol>
           <CCard>
-            <CCardHeader>
-              Add New Product to Pro Shop
-            </CCardHeader>
+            <CCardHeader>Edit Product</CCardHeader>
             <CCardBody>
               <Formik
                 initialValues={initialValues}
+                enableReinitialize
                 validationSchema={validationSchema}
-                onSubmit={handleCreate}
+                onSubmit={handleSave}
               >
-                {({ handleSubmit, setFieldValue }) => (
+                {({ values, handleSubmit, setFieldValue }) => (
                   <CForm onSubmit={handleSubmit}>
                     <CFormGroup>
                       <CLabel>Name</CLabel>
@@ -98,6 +101,7 @@ function NewProduct() {
                       <CLabel>Category</CLabel>
                       <CreatableSelect
                         isMulti
+                        value={values.category}
                         onChange={(value) => {
                           setFieldValue("category", value);
                         }}
@@ -116,11 +120,8 @@ function NewProduct() {
                       <ErrorMessage name="unit" />
                     </CFormGroup>
                     <CFormGroup>
-                      <CButton
-                        color="primary"
-                        type="submit"
-                      >
-                        Create
+                      <CButton color="primary" type="submit">
+                        Save
                       </CButton>
                     </CFormGroup>
                   </CForm>

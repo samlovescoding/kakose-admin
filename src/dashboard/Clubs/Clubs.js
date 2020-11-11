@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from "react";
-import {
-  CButton,
-  CCard,
-  CCardBody,
-  CDataTable,
-} from "@coreui/react";
-import axios from "../services/axios";
-import DashboardLayout from "../layouts/DashboardLayout";
+import { CButton, CCard, CCardBody, CDataTable } from "@coreui/react";
 import { useHistory } from "react-router-dom";
+
+// Custom Imports
+import axios from "../../services/axios";
+import DashboardLayout from "../../layouts/DashboardLayout";
 
 function Clubs() {
   // Stateful Hooks
   const [clubs, setClubs] = useState([]);
   const history = useHistory();
 
-  // Events and Effects
+  // Effects and Events
   async function loadClubs() {
     try {
       const response = await axios.get("/clubs");
@@ -46,12 +43,7 @@ function Clubs() {
         <CCardBody>
           <CDataTable
             items={clubs}
-            fields={[
-              "name",
-              "slug",
-              "createdAt",
-              "control",
-            ]}
+            fields={["name", "slug", "createdAt", "control"]}
             tableFilter
             itemsPerPageSelect
             itemsPerPage={10}
@@ -65,11 +57,7 @@ function Clubs() {
                     <CButton
                       color="warning"
                       onClick={(e) => {
-                        history.push(
-                          "/clubs/" +
-                            item._id +
-                            "/user-create"
-                        );
+                        history.push("/clubs/" + item._id + "/user-create");
                       }}
                       className="mr-1"
                     >

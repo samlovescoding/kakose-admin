@@ -7,20 +7,21 @@ import {
   CCol,
   CForm,
   CFormGroup,
-  CFormText,
   CInput,
   CLabel,
   CRow,
 } from "@coreui/react";
 import React, { useEffect, useState } from "react";
-import DashboardLayout from "../layouts/DashboardLayout";
 import * as yup from "yup";
 import { ErrorMessage, Field, Formik } from "formik";
-import axios from "../services/axios";
-import useUser from "../hooks/useUser";
-import { useHistory } from "react-router-dom";
+
+// Custom Imports
+import DashboardLayout from "../../layouts/DashboardLayout";
+import axios from "../../services/axios";
+import useUser from "../../hooks/useUser";
 
 function ChangePassword() {
+  // Stateful Hooks
   const { removeUser } = useUser();
 
   const [error, setError] = useState();
@@ -32,24 +33,16 @@ function ChangePassword() {
   };
 
   const validationSchema = yup.object({
-    currentPassword: yup
-      .string()
-      .required()
-      .label("Current Password"),
-    newPassword: yup
-      .string()
-      .required()
-      .min(8)
-      .label("New Password"),
+    currentPassword: yup.string().required().label("Current Password"),
+    newPassword: yup.string().required().min(8).label("New Password"),
     confirmPassword: yup
       .string()
       .required()
-      .oneOf(
-        [yup.ref("newPassword"), null],
-        "Password confirmation is incorrect."
-      )
+      .oneOf([yup.ref("newPassword"), null], "Password confirmation is incorrect.")
       .label("Confirm Password"),
   });
+
+  // Effects and Events
 
   async function handleChangePassword(values) {
     try {
@@ -66,62 +59,31 @@ function ChangePassword() {
     <CCard>
       <CCardHeader>Change Password</CCardHeader>
       <CCardBody>
-        <Formik
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={handleChangePassword}
-        >
+        <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleChangePassword}>
           {({ values, handleSubmit }) => (
             <CForm onSubmit={handleSubmit}>
-              {error ? (
-                <CAlert color="danger">{error}</CAlert>
-              ) : null}
+              {error ? <CAlert color="danger">{error}</CAlert> : null}
               <CFormGroup>
                 <CLabel>Current Password</CLabel>
-                <Field
-                  name="currentPassword"
-                  as={CInput}
-                  type="password"
-                />
-                <ErrorMessage
-                  name="currentPassword"
-                  component="div"
-                  className="text-danger"
-                />
+                <Field name="currentPassword" as={CInput} type="password" />
+                <ErrorMessage name="currentPassword" component="div" className="text-danger" />
               </CFormGroup>
               <CFormGroup>
                 <CLabel>New Password</CLabel>
-                <Field
-                  name="newPassword"
-                  as={CInput}
-                  type="password"
-                />
-                <ErrorMessage
-                  name="newPassword"
-                  component="div"
-                  className="text-danger"
-                />
+                <Field name="newPassword" as={CInput} type="password" />
+                <ErrorMessage name="newPassword" component="div" className="text-danger" />
               </CFormGroup>
               <CFormGroup>
                 <CLabel>Confirm Password</CLabel>
-                <Field
-                  name="confirmPassword"
-                  as={CInput}
-                  type="password"
-                />
-                <ErrorMessage
-                  name="confirmPassword"
-                  component="div"
-                  className="text-danger"
-                />
+                <Field name="confirmPassword" as={CInput} type="password" />
+                <ErrorMessage name="confirmPassword" component="div" className="text-danger" />
               </CFormGroup>
               <CFormGroup style={{ display: "flex" }}>
                 <CButton color="primary" type="submit">
                   Change Password
                 </CButton>
                 <div className="text-warning mt-2 ml-2">
-                  You will need to re-login after
-                  successfully changing password.
+                  You will need to re-login after successfully changing password.
                 </div>
               </CFormGroup>
             </CForm>
@@ -186,39 +148,22 @@ function ProfileSettingsWithoutPassword() {
         >
           {({ handleSubmit, values }) => (
             <CForm onSubmit={handleSubmit}>
-              {error ? (
-                <CAlert color="danger">{error}</CAlert>
-              ) : null}
+              {error ? <CAlert color="danger">{error}</CAlert> : null}
               <CFormGroup>
                 <CLabel>Your Name</CLabel>
                 <Field name="name" as={CInput} />
-                <ErrorMessage
-                  name="name"
-                  component="div"
-                  className="text-danger"
-                />
+                <ErrorMessage name="name" component="div" className="text-danger" />
               </CFormGroup>
               <CFormGroup>
                 <CLabel>Email</CLabel>
-                <Field
-                  name="email"
-                  type="email"
-                  as={CInput}
-                  disabled={true}
-                />
-                <ErrorMessage
-                  name="email"
-                  component="div"
-                  className="text-danger"
-                />
+                <Field name="email" type="email" as={CInput} disabled={true} />
+                <ErrorMessage name="email" component="div" className="text-danger" />
               </CFormGroup>
               <CFormGroup style={{ display: "flex" }}>
                 <CButton color="primary" type="submit">
                   Update
                 </CButton>
-                <div className="text-warning mt-2 ml-2">
-                  You will need to re-login after update.
-                </div>
+                <div className="text-warning mt-2 ml-2">You will need to re-login after update.</div>
               </CFormGroup>
             </CForm>
           )}

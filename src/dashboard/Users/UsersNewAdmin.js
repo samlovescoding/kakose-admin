@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   CAlert,
   CButton,
@@ -11,14 +12,16 @@ import {
   CLabel,
   CRow,
 } from "@coreui/react";
-import React, { useState } from "react";
-import DashboardLayout from "../layouts/DashboardLayout";
 import * as yup from "yup";
 import { ErrorMessage, Field, Formik } from "formik";
 import { useHistory, useParams } from "react-router-dom";
-import axios from "../services/axios";
+
+// Custom Imports
+import DashboardLayout from "../../layouts/DashboardLayout";
+import axios from "../../services/axios";
 
 function ClubUsersNew() {
+  // Stateful Hooks
   const [error, setError] = useState(null);
 
   const history = useHistory();
@@ -29,16 +32,19 @@ function ClubUsersNew() {
     name: "",
     email: "",
     password: "",
+    confirmPassword: "",
   };
 
   const validationSchema = yup.object({
     name: yup.string().required().label("Name"),
     email: yup.string().email().required().label("Email"),
-    password: yup
+    password: yup.string().min(8).required().label("Password"),
+    confirmPassword: yup
       .string()
       .min(8)
       .required()
-      .label("Password"),
+      .oneOf([yup.ref("password"), null], "Password Confirmation is incorrect.")
+      .label("Password Confirmation"),
   });
 
   return (
@@ -46,25 +52,19 @@ function ClubUsersNew() {
       <CRow>
         <CCol>
           <CCard>
-            <CCardHeader>
-              Club User Registration
-            </CCardHeader>
+            <CCardHeader>Club Admin Registration</CCardHeader>
             <CCardBody>
-              {error ? (
-                <CAlert color="danger">{error}</CAlert>
-              ) : null}
+              {error ? <CAlert color="danger">{error}</CAlert> : null}
               <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
                 onSubmit={async (values, { resetForm }) => {
                   try {
-                    const response = await axios.put(
-                      "/users/register",
-                      {
-                        ...values,
-                        club: id,
-                      }
-                    );
+                    const response = await axios.put("/users/register", {
+                      ...values,
+                      club: id,
+                      role: "club_admin",
+                    });
                     history.push("/clubs");
                     resetForm();
                   } catch (e) {
@@ -78,40 +78,26 @@ function ClubUsersNew() {
                     <CFormGroup>
                       <CLabel>Name</CLabel>
                       <Field name="name" as={CInput} />
-                      <ErrorMessage
-                        name="name"
-                        className="text-danger"
-                      />
+                      <ErrorMessage component="div" name="name" className="text-danger" />
                     </CFormGroup>
                     <CFormGroup>
                       <CLabel>Email</CLabel>
                       <Field name="email" as={CInput} />
-                      <ErrorMessage
-                        name="email"
-                        className="text-danger"
-                      />
+                      <ErrorMessage component="div" name="email" className="text-danger" />
                     </CFormGroup>
                     <CFormGroup>
                       <CLabel>Password</CLabel>
-                      <Field
-                        name="password"
-                        type="password"
-                        as={CInput}
-                      />
-                      <ErrorMessage
-                        name="password"
-                        className="text-danger"
-                      />
+                      <Field name="password" type="password" as={CInput} />
+                      <ErrorMessage component="div" name="password" className="text-danger" />
                     </CFormGroup>
                     <CFormGroup>
-                      <CButton
-                        type="submit"
-                        color="primary"
-                        disabled={isSubmitting}
-                      >
-                        {isSubmitting
-                          ? "Creating"
-                          : "Create"}
+                      <CLabel>Confirm Password</CLabel>
+                      <Field type="password" name="confirmPassword" as={CInput} />
+                      <ErrorMessage component="div" name="confirmPassword" className="text-danger" />
+                    </CFormGroup>
+                    <CFormGroup>
+                      <CButton type="submit" color="primary" disabled={isSubmitting}>
+                        {isSubmitting ? "Creating" : "Create"}
                       </CButton>
                     </CFormGroup>
                   </CForm>

@@ -1,54 +1,40 @@
 import React from "react";
 
-const TodayBookings = React.lazy(() =>
-  import("./dashboard/TodayBookings")
-);
-const Inventory = React.lazy(() =>
-  import("./dashboard/Inventory")
-);
-const BookingsHistory = React.lazy(() =>
-  import("./dashboard/BookingsHistory")
-);
-const Members = React.lazy(() =>
-  import("./dashboard/Members")
-);
-const MembersEdit = React.lazy(() =>
-  import("./dashboard/MembersEdit")
-);
-const NewMember = React.lazy(() =>
-  import("./dashboard/NewMember")
-);
-const Products = React.lazy(() =>
-  import("./dashboard/Products")
-);
-const NewProduct = React.lazy(() =>
-  import("./dashboard/NewProduct")
-);
-const NewClubUser = React.lazy(() =>
-  import("./dashboard/NewClubUser")
-);
-const TodayOrders = React.lazy(() =>
-  import("./dashboard/TodayOrders")
-);
-const OrderHistory = React.lazy(() =>
-  import("./dashboard/OrderHistory")
-);
-const ClubSettings = React.lazy(() =>
-  import("./dashboard/ClubSettings")
-);
-const ProfileSettings = React.lazy(() =>
-  import("./dashboard/ProfileSettings")
-);
-const ClubUsers = React.lazy(() =>
-  import("./dashboard/ClubUsers")
-);
-const ClubUsersNew = React.lazy(() =>
-  import("./dashboard/ClubUsersNew")
-);
-const Clubs = React.lazy(() => import("./dashboard/Clubs"));
-const NewClub = React.lazy(() =>
-  import("./dashboard/NewClub")
-);
+// Bookings
+const BookingsToday = React.lazy(() => import("./dashboard/Bookings/BookingsToday"));
+const Bookings = React.lazy(() => import("./dashboard/Bookings/Bookings"));
+const BookingsNew = React.lazy(() => import("./dashboard/Bookings/BookingsNew"));
+
+// Clubs
+const Clubs = React.lazy(() => import("./dashboard/Clubs/Clubs"));
+const ClubsNew = React.lazy(() => import("./dashboard/Clubs/ClubsNew"));
+
+// Members
+const Members = React.lazy(() => import("./dashboard/Members/Members"));
+const MembersEdit = React.lazy(() => import("./dashboard/Members/MembersEdit"));
+const MembersNew = React.lazy(() => import("./dashboard/Members/MembersNew"));
+
+// Orders
+const Orders = React.lazy(() => import("./dashboard/Orders/Orders"));
+const OrdersToday = React.lazy(() => import("./dashboard/Orders/OrdersToday"));
+
+// Settings
+const SettingsClub = React.lazy(() => import("./dashboard/Settings/SettingsClub"));
+const SettingsProfile = React.lazy(() => import("./dashboard/Settings/SettingsProfile"));
+
+// Member Types
+const MemberTypes = React.lazy(() => import("./dashboard/MemberTypes/MemberTypes"));
+const MemberTypesNew = React.lazy(() => import("./dashboard/MemberTypes/MemberTypesNew"));
+
+// Shop
+const Products = React.lazy(() => import("./dashboard/Shop/Products"));
+const ProductsNew = React.lazy(() => import("./dashboard/Shop/ProductsNew"));
+const ProductsEdit = React.lazy(() => import("./dashboard/Shop/ProductsEdit"));
+
+// Users
+const Users = React.lazy(() => import("./dashboard/Users/Users"));
+const UsersNew = React.lazy(() => import("./dashboard/Users/UsersNew"));
+const UsersNewAdmin = React.lazy(() => import("./dashboard/Users/UsersNewAdmin"));
 
 const routes = [
   { path: "/", exact: true, name: "Home" },
@@ -56,13 +42,13 @@ const routes = [
     path: "/bookings/today",
     exact: true,
     name: "Today Bookings",
-    component: TodayBookings,
+    component: BookingsToday,
   },
   {
     path: "/bookings",
     exact: true,
     name: "Bookings History",
-    component: BookingsHistory,
+    component: Bookings,
   },
   // Members
   {
@@ -81,7 +67,13 @@ const routes = [
     path: "/members/create",
     exact: true,
     name: "New Member",
-    component: NewMember,
+    component: MembersNew,
+  },
+  {
+    path: "/members/:member/book",
+    exact: true,
+    name: "New Booking",
+    component: BookingsNew,
   },
   // Pro Shop
   {
@@ -94,50 +86,64 @@ const routes = [
     path: "/products/create",
     exact: true,
     name: "New Product",
-    component: NewProduct,
+    component: ProductsNew,
+  },
+  {
+    path: "/products/:id/edit",
+    exact: true,
+    name: "Product Edit",
+    component: ProductsEdit,
   },
   {
     path: "/orders/today",
     exact: true,
     name: "Today Orders",
-    component: TodayOrders,
-  },
-  {
-    path: "/inventory",
-    exact: true,
-    name: "Inventory",
-    component: Inventory,
+    component: OrdersToday,
   },
   {
     path: "/orders",
     exact: true,
     name: "Order History",
-    component: OrderHistory,
+    component: Orders,
   },
   // Settings
   {
     path: "/settings/club",
     exact: true,
     name: "Club Settings",
-    component: ClubSettings,
+    component: SettingsClub,
   },
   {
     path: "/settings/profile",
     exact: true,
     name: "Profile Settings",
-    component: ProfileSettings,
+    component: SettingsProfile,
   },
+  // Member Types
+  {
+    path: "/member-types",
+    exact: true,
+    name: "Member Types",
+    component: MemberTypes,
+  },
+  {
+    path: "/member-types/create",
+    exact: true,
+    name: "New Member Type",
+    component: MemberTypesNew,
+  },
+  // Users
   {
     path: "/users",
     exact: true,
     name: "Club Users",
-    component: ClubUsers,
+    component: Users,
   },
   {
     path: "/users/create",
     exact: true,
     name: "Club User Create",
-    component: NewClubUser,
+    component: UsersNew,
   },
   // Admin
   {
@@ -150,13 +156,12 @@ const routes = [
     path: "/clubs/create",
     exact: true,
     name: "New Club",
-    component: NewClub,
+    component: ClubsNew,
   },
   {
     path: "/clubs/:id/user-create",
     exact: true,
-    component: ClubUsersNew,
+    component: UsersNewAdmin,
   },
 ];
-
 export default routes;

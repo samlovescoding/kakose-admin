@@ -1,14 +1,11 @@
-import {
-  CButton,
-  CCard,
-  CCardBody,
-  CDataTable,
-} from "@coreui/react";
+import { CButton, CCard, CCardBody, CDataTable } from "@coreui/react";
 import React, { useEffect, useState } from "react";
-import axios from "../services/axios";
-import config from "../config";
 import { useHistory } from "react-router-dom";
-import DashboardLayout from "../layouts/DashboardLayout";
+
+// Custom Imports
+import axios from "../../services/axios";
+import DashboardLayout from "../../layouts/DashboardLayout";
+
 function Members() {
   // Stateful Hooks
   const [members, setMembers] = useState([]);
@@ -18,6 +15,7 @@ function Members() {
   async function loadMembers() {
     try {
       const response = await axios.get("/admin/members");
+      console.log(response.data);
       setMembers(response.data);
     } catch (e) {
       console.error(e.response.data);
@@ -60,17 +58,14 @@ function Members() {
             sorter
             pagination
             scopedSlots={{
+              memberType: (item) => <td>{item.memberType.name}</td>,
               profilePhoto: (item, index) => {
                 if (item.profilePhoto == null) {
                   return <td></td>;
                 }
                 return (
                   <td>
-                    <img
-                      width="60"
-                      src={item.profilePhoto}
-                      alt="File Not Found"
-                    />
+                    <img width="60" src={item.profilePhoto} alt="File Not Found" />
                   </td>
                 );
               },
@@ -78,12 +73,10 @@ function Members() {
                 return (
                   <td>
                     <CButton
-                      color="primary"
+                      color="warning"
                       className="mr-1"
                       onClick={(e) => {
-                        history.push(
-                          "/members/" + item._id + "/edit"
-                        );
+                        history.push("/members/" + item._id + "/edit");
                       }}
                     >
                       Edit

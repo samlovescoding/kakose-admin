@@ -13,9 +13,11 @@ import {
 } from "@coreui/react";
 import { ErrorMessage, Field, Formik } from "formik";
 import React, { useEffect, useState } from "react";
-import DashboardLayout from "../layouts/DashboardLayout";
-import axios from "../services/axios";
 import * as yup from "yup";
+
+// Custom Imports
+import DashboardLayout from "../../layouts/DashboardLayout";
+import axios from "../../services/axios";
 
 function ClubSettings() {
   // Stateful hooks
@@ -27,30 +29,16 @@ function ClubSettings() {
   });
   const [error, setError] = useState(null);
   const validationSchema = yup.object({
-    tee_time_length: yup
-      .number()
-      .required()
-      .label("Length"),
-    tee_time_max_bookings: yup
-      .number()
-      .required()
-      .label("Max Bookings"),
-    club_opening_time: yup
-      .number()
-      .required()
-      .label("Opening Time"),
-    club_closing_time: yup
-      .number()
-      .required()
-      .label("Closing Time"),
+    tee_time_length: yup.number().required().label("Length"),
+    tee_time_max_bookings: yup.number().required().label("Max Bookings"),
+    club_opening_time: yup.number().required().label("Opening Time"),
+    club_closing_time: yup.number().required().label("Closing Time"),
   });
 
   // Effects and Events
   async function loadClubSettings() {
     try {
-      const { data: club } = await axios.get(
-        "/admin/club-settings"
-      );
+      const { data: club } = await axios.get("/admin/club-settings");
       setInitialValues({
         tee_time_length: club.tee_time_length,
         tee_time_max_bookings: club.tee_time_max_bookings,
@@ -65,10 +53,7 @@ function ClubSettings() {
 
   async function handleUpdate(values) {
     try {
-      let response = await axios.patch(
-        "/admin/club-settings",
-        values
-      );
+      let response = await axios.patch("/admin/club-settings", values);
       console.log(response.data);
     } catch (e) {
       console.error(e);
@@ -93,18 +78,16 @@ function ClubSettings() {
                 validationSchema={validationSchema}
                 onSubmit={handleUpdate}
               >
-                {({
-                  values,
-                  handleSubmit,
-                  setFieldValue,
-                  isSubmitting,
-                }) => {
+                {({ values, handleSubmit, setFieldValue, isSubmitting }) => {
                   function getTimeFieldAsNumeric(key) {
                     const value = values[key];
                     let hours = Math.floor(value / 60);
                     let minutes = Math.floor(value % 60);
                     if (hours < 10) {
                       hours = "0" + hours;
+                    }
+                    if (hours === 24) {
+                      hours = "00";
                     }
                     if (minutes < 10) {
                       minutes = "0" + minutes;
@@ -113,57 +96,25 @@ function ClubSettings() {
                   }
 
                   function setTimeFieldAsNumeric(event) {
-                    const [
-                      hours,
-                      minutes,
-                    ] = event.target.value.split(":");
+                    const [hours, minutes] = event.target.value.split(":");
 
-                    const value =
-                      parseInt(hours) * 60 +
-                      parseInt(minutes);
+                    const value = parseInt(hours) * 60 + parseInt(minutes);
 
-                    setFieldValue(
-                      event.target.getAttribute("name"),
-                      value
-                    );
+                    setFieldValue(event.target.getAttribute("name"), value);
                   }
 
                   return (
                     <CForm onSubmit={handleSubmit}>
-                      {error ? (
-                        <CAlert color="danger">
-                          {error}
-                        </CAlert>
-                      ) : null}
+                      {error ? <CAlert color="danger">{error}</CAlert> : null}
                       <CFormGroup>
-                        <CLabel>
-                          Tee Time Length (in minutes)
-                        </CLabel>
-                        <Field
-                          as={CInput}
-                          name="tee_time_length"
-                          disabled
-                        />
-                        <ErrorMessage
-                          name="tee_time_length"
-                          component="div"
-                          className="text-danger"
-                        />
+                        <CLabel>Tee Time Length (in minutes)</CLabel>
+                        <Field as={CInput} name="tee_time_length" disabled />
+                        <ErrorMessage name="tee_time_length" component="div" className="text-danger" />
                       </CFormGroup>
                       <CFormGroup>
-                        <CLabel>
-                          Tee Time Max Bookings per Slot
-                        </CLabel>
-                        <Field
-                          as={CInput}
-                          name="tee_time_max_bookings"
-                          disabled
-                        />
-                        <ErrorMessage
-                          name="tee_time_max_bookings"
-                          component="div"
-                          className="text-danger"
-                        />
+                        <CLabel>Tee Time Max Bookings per Slot</CLabel>
+                        <Field as={CInput} name="tee_time_max_bookings" disabled />
+                        <ErrorMessage name="tee_time_max_bookings" component="div" className="text-danger" />
                       </CFormGroup>
                       <CFormGroup>
                         <CLabel>Club Opening Time</CLabel>
@@ -172,15 +123,9 @@ function ClubSettings() {
                           name="club_opening_time"
                           type="time"
                           onChange={setTimeFieldAsNumeric}
-                          value={getTimeFieldAsNumeric(
-                            "club_opening_time"
-                          )}
+                          value={getTimeFieldAsNumeric("club_opening_time")}
                         />
-                        <ErrorMessage
-                          name="club_opening_time"
-                          component="div"
-                          className="text-danger"
-                        />
+                        <ErrorMessage name="club_opening_time" component="div" className="text-danger" />
                       </CFormGroup>
                       <CFormGroup>
                         <CLabel>Club Closing Time</CLabel>
@@ -189,22 +134,12 @@ function ClubSettings() {
                           name="club_closing_time"
                           type="time"
                           onChange={setTimeFieldAsNumeric}
-                          value={getTimeFieldAsNumeric(
-                            "club_closing_time"
-                          )}
+                          value={getTimeFieldAsNumeric("club_closing_time")}
                         />
-                        <ErrorMessage
-                          name="club_closing_time"
-                          component="div"
-                          className="text-danger"
-                        />
+                        <ErrorMessage name="club_closing_time" component="div" className="text-danger" />
                       </CFormGroup>
                       <CFormGroup>
-                        <CButton
-                          color="primary"
-                          type="submit"
-                          disabled={isSubmitting}
-                        >
+                        <CButton color="primary" type="submit" disabled={isSubmitting}>
                           Save
                         </CButton>
                       </CFormGroup>
