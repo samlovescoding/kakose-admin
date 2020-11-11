@@ -24,6 +24,9 @@ const Products = React.lazy(() =>
 const NewProduct = React.lazy(() =>
   import("./dashboard/NewProduct")
 );
+const NewClubUser = React.lazy(() =>
+  import("./dashboard/NewClubUser")
+);
 const TodayOrders = React.lazy(() =>
   import("./dashboard/TodayOrders")
 );
@@ -36,8 +39,8 @@ const ClubSettings = React.lazy(() =>
 const ProfileSettings = React.lazy(() =>
   import("./dashboard/ProfileSettings")
 );
-const ClubAdmins = React.lazy(() =>
-  import("./dashboard/ClubAdmins")
+const ClubUsers = React.lazy(() =>
+  import("./dashboard/ClubUsers")
 );
 const ClubUsersNew = React.lazy(() =>
   import("./dashboard/ClubUsersNew")
@@ -127,8 +130,14 @@ const routes = [
   {
     path: "/users",
     exact: true,
-    name: "Club Admins",
-    component: ClubAdmins,
+    name: "Club Users",
+    component: ClubUsers,
+  },
+  {
+    path: "/users/create",
+    exact: true,
+    name: "Club User Create",
+    component: NewClubUser,
   },
   // Admin
   {

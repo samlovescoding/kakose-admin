@@ -77,8 +77,14 @@ const clubSidebar = [
   },
   {
     _tag: "CSidebarNavItem",
-    name: "Club Admins",
+    name: "Users",
     to: "/users",
+    icon: "cil-people",
+  },
+  {
+    _tag: "CSidebarNavItem",
+    name: "New User",
+    to: "/users/create",
     icon: "cil-people",
   },
 ];
