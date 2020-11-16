@@ -7,9 +7,11 @@ import DashboardLayout from "../../layouts/DashboardLayout";
 import SheetRenderer from "./SheetRenderer";
 import axios from "../../services/axios";
 import SheetCreator from "./SheetCreator";
+import { useParams } from "react-router-dom";
 
 function Sheets() {
   // Stateful Hooks
+  const { stamp } = useParams();
   const [date, setDate] = useState(new Date());
   const [sheet, setSheet] = useState();
 
@@ -27,6 +29,13 @@ function Sheets() {
       console.error(e.response.data);
     }
   }
+
+  useEffect(() => {
+    if (stamp) {
+      const [year, month, date] = stamp.split("-");
+      setDate(new Date(year, month, date));
+    }
+  }, []);
 
   useEffect(() => {
     loadSheet();

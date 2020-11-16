@@ -1,7 +1,7 @@
 import { CAlert, CButton, CCard, CCardBody, CForm, CFormGroup, CInput, CLabel, CSelect } from "@coreui/react";
 import { ErrorMessage, Field, Formik } from "formik";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import * as yup from "yup";
 
@@ -11,9 +11,10 @@ import axios from "../../services/axios";
 
 function BookingNew() {
   // Stateful Hooks
+  const history = useHistory();
   const [error, setError] = useState();
-  const [day, setDay] = useState(new Date());
-  const [slots, useSlots] = useState([]);
+  const [date, setDate] = useState(new Date());
+  const [slots, setSlots] = useState([]);
 
   const { member } = useParams();
 
@@ -31,34 +32,42 @@ function BookingNew() {
 
   // Effects and Events
 
-  function handleCreate(values) {
+  function date2stamp(date) {
+    let _date = date.getDate();
+    let month = date.getMonth();
+    let year = date.getFullYear();
+    const stamp = `${year}-${month}-${_date}`;
+    return stamp;
+  }
+
+  async function handleCreate(values) {
     try {
-      console.log({ ...values, member });
+      setError(null);
+      const response = await axios.post("/admin/booking", { ...values, member });
+      history.push("/sheets");
     } catch (e) {
+      setError(e.response.data.error.message);
       console.error(e.response.data);
     }
   }
 
-  async function loadSlots() {
+  async function loadSlots(date) {
     try {
       setError(null);
-      let date = day.getDate();
-      if (date < 10) date = `0${date}`;
-      let month = day.getMonth();
-      if (month < 10) month = `0${month}`;
-      let year = day.getFullYear();
-      const stamp = `${year}-${month}-${date}`;
-      const response = await axios.get("/admin/slots/" + stamp);
-      console.log(response.data);
+      const response = await axios.get("/admin/slots/" + date2stamp(date));
+      setSlots(response.data);
     } catch (e) {
-      console.error(e.response.data);
-      setError(e.response.data.error.message);
+      if (e.response) {
+        setError(e.response.data.error.message);
+      } else {
+        setError(e.message);
+      }
     }
   }
 
   useEffect(() => {
-    loadSlots();
-  }, [day]);
+    loadSlots(date);
+  }, [date]);
 
   return (
     <DashboardLayout>
@@ -72,27 +81,42 @@ function BookingNew() {
                   <DatePicker
                     inline
                     onChange={(value) => {
-                      let date = value.getDate();
-                      if (date < 10) date = `0${date}`;
-                      let month = value.getMonth();
-                      if (month < 10) month = `0${month}`;
-                      let year = value.getFullYear();
-                      setFieldValue("day", `${year}-${month}-${date}`);
-                      setDay(value);
+                      setFieldValue("day", date2stamp(value));
+                      setDate(value);
                     }}
-                    value={day}
+                    value={date}
                   />
 
                   <ErrorMessage component="div" className="text-danger" name="day" />
                 </CFormGroup>
                 <CFormGroup>
                   <CLabel>Time Slot</CLabel>
-                  <Field as={CSelect} name="slot">
-                    {slots.map((slot, key) => (
-                      <option key={key} value={slot.value}>
-                        {slot.label}
-                      </option>
-                    ))}
+                  <Field
+                    as={CSelect}
+                    name="slot"
+                    onChange={(e) => {
+                      setFieldValue("slot", parseInt(e.target.value));
+                    }}
+                  >
+                    <option value="">Please choose a slot</option>
+                    {slots
+                      .filter((slot) => {
+                        if (slot.available <= 0) {
+                          return false;
+                        }
+                        return true;
+                      })
+                      .map((slot) => {
+                        return {
+                          label: `${slot.time} Remaining Slots ${slot.available}`,
+                          value: slot.code,
+                        };
+                      })
+                      .map((slot, key) => (
+                        <option key={key} value={slot.value}>
+                          {slot.label}
+                        </option>
+                      ))}
                   </Field>
                   <ErrorMessage component="div" className="text-danger" name="slot" />
                 </CFormGroup>

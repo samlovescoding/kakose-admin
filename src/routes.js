@@ -61,6 +61,13 @@ const routes = [
   // Tee Sheets
   {
     path: "/sheets",
+    exact: true,
+    name: "Tee Sheets",
+    component: Sheets,
+  },
+  {
+    path: "/sheets/:stamp",
+    exact: true,
     name: "Tee Sheets",
     component: Sheets,
   },

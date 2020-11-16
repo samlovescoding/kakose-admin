@@ -1,22 +1,20 @@
-import { CCard, CCardBody, CCol, CRow } from "@coreui/react";
 import React, { useEffect, useState } from "react";
+import { CCol, CRow } from "@coreui/react";
+
+// Custom Imports
 import SlotSingle from "./SlotSingle";
+import styled from "styled-components";
 
-function Slots({ sheet, slots }) {
-  const [bookings, setBookings] = useState([]);
+const Hidden = styled.div`
+  display: none;
+`;
 
-  useEffect(() => {
-    let _bookings = [];
-    for (let i = 0; i < slots.max; i++) {
-      _bookings.push({});
-    }
-    setBookings(_bookings);
-  }, []);
+function Slots({ sheet, slot }) {
   return (
     <CRow>
-      {bookings.map((booking, key) => (
+      {slot.bookings.map((booking, key) => (
         <CCol key={key}>
-          <SlotSingle sheet={sheet} booking={booking} player={null} />
+          <SlotSingle sheet={sheet} slot={slot} booking={booking} />
         </CCol>
       ))}
     </CRow>
