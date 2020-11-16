@@ -4,9 +4,29 @@ const { user } = useUser();
 
 const clubSidebar = [
   {
+    _tag: "CSidebarNavTitle",
+    _children: ["Tee Sheets"],
+  },
+  {
     _tag: "CSidebarNavItem",
-    name: "Tee Times",
-    to: "/bookings",
+    name: "Tee Sheets",
+    to: "/sheets",
+    icon: "cil-golf",
+  },
+  {
+    _tag: "CSidebarNavTitle",
+    _children: ["Tee Templates"],
+  },
+  {
+    _tag: "CSidebarNavItem",
+    name: "Tee Templates",
+    to: "/templates",
+    icon: "cil-golf",
+  },
+  {
+    _tag: "CSidebarNavItem",
+    name: "New Templates",
+    to: "/templates/create",
     icon: "cil-golf",
   },
   // {

@@ -1,6 +1,7 @@
 import React, { Component, useContext, useState } from "react";
 import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 
+import "react-datepicker/dist/react-datepicker.css";
 import "./scss/style.scss";
 
 const loading = (

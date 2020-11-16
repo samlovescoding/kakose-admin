@@ -26,6 +26,13 @@ const SettingsProfile = React.lazy(() => import("./dashboard/Settings/SettingsPr
 const MemberTypes = React.lazy(() => import("./dashboard/MemberTypes/MemberTypes"));
 const MemberTypesNew = React.lazy(() => import("./dashboard/MemberTypes/MemberTypesNew"));
 
+// Tee Templates
+const TeeTemplates = React.lazy(() => import("./dashboard/TeeTemplates/TeeTemplates"));
+const TeeTemplatesCreate = React.lazy(() => import("./dashboard/TeeTemplates/TeeTemplatesCreate"));
+
+// Tee Sheets
+const Sheets = React.lazy(() => import("./dashboard/Sheets/Sheets"));
+
 // Shop
 const Products = React.lazy(() => import("./dashboard/Shop/Products"));
 const ProductsNew = React.lazy(() => import("./dashboard/Shop/ProductsNew"));
@@ -51,6 +58,26 @@ const routes = [
     component: Bookings,
   },
 
+  // Tee Sheets
+  {
+    path: "/sheets",
+    name: "Tee Sheets",
+    component: Sheets,
+  },
+
+  // Tee Templates
+  {
+    path: "/templates",
+    exact: true,
+    name: "Tee Templates",
+    component: TeeTemplates,
+  },
+  {
+    path: "/templates/create",
+    exact: true,
+    name: "New Tee Template",
+    component: TeeTemplatesCreate,
+  },
   // Members
   {
     path: "/members",
