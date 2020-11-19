@@ -1,19 +1,25 @@
 import { CButton, CCard, CCardBody, CCardHeader, CForm, CFormGroup, CLabel, CSelect } from "@coreui/react";
 import { ErrorMessage, Field, Formik } from "formik";
 import React, { useEffect, useState } from "react";
+import ReactDatePicker from "react-datepicker";
 import * as yup from "yup";
 import axios from "../../services/axios";
 
 function SheetCreator({ date, reloadSheet }) {
   const [templates, setTemplates] = useState([]);
   const [template, setTemplate] = useState();
+  const [club, setClub] = useState();
 
-  const initialValues = {
+  const [initialValues, setInitialValues] = useState({
     template: "",
-  };
+    ballot: "true",
+    ballotRunDate: date,
+  });
 
   const validationSchema = yup.object({
     template: yup.string().required().label("Template"),
+    ballot: yup.string().oneOf(["true", "false"]).label("Using ballot"),
+    ballotRunDate: yup.date().label("Ballot run date"),
   });
 
   // Effects and Events
@@ -53,9 +59,32 @@ function SheetCreator({ date, reloadSheet }) {
 
   async function handleCreate(values) {
     try {
+      if (club == null) {
+        throw new Error("Club information was not loaded!");
+      }
+      if (template == null) {
+        throw new Error("Template information was not loaded!");
+      }
+
+      const otherData = {
+        ballot: values.ballot === "true" ? true : false,
+        ballotRunDate: values.ballotRunDate,
+        sheetType: template.type,
+        ballotEntries: [],
+      };
       const stamp = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
-      const response = await axios.post("/sheets/" + stamp, { ...values, slots: createSlots(template) });
+      await axios.post("/sheets/" + stamp, { ...values, slots: createSlots(template), ...otherData });
       reloadSheet();
+    } catch (e) {
+      alert(e.message);
+      console.error(e);
+    }
+  }
+
+  async function loadClub() {
+    try {
+      const response = await axios.get("/admin/club-settings");
+      setClub(response.data);
     } catch (e) {
       console.error(e);
     }
@@ -80,9 +109,25 @@ function SheetCreator({ date, reloadSheet }) {
     }
   }
 
+  function addDays(date, days) {
+    var result = new Date(date);
+    result.setDate(date.getDate() + days);
+    return result;
+  }
+
   useEffect(() => {
+    loadClub();
     loadTemplates();
   }, []);
+
+  useEffect(() => {
+    if (club)
+      setInitialValues({
+        template: "",
+        ballot: club.ballot ? "true" : "false",
+        ballotRunDate: addDays(date, -club.ballotDays),
+      });
+  }, [club, date]);
 
   return (
     <CCard>
@@ -90,7 +135,12 @@ function SheetCreator({ date, reloadSheet }) {
         Create Tee Sheet for {date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate()}
       </CCardHeader>
       <CCardBody>
-        <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleCreate}>
+        <Formik
+          initialValues={initialValues}
+          enableReinitialize
+          validationSchema={validationSchema}
+          onSubmit={handleCreate}
+        >
           {({ values, handleSubmit, setFieldValue }) => (
             <CForm onSubmit={handleSubmit}>
               <CFormGroup>
@@ -114,6 +164,31 @@ function SheetCreator({ date, reloadSheet }) {
                 </Field>
                 <ErrorMessage name="template" component="div" className="text-danger" />
               </CFormGroup>
+              {club && club.ballot && club.ballot === true && addDays(date, -club.ballotDays) > new Date() ? (
+                <>
+                  <CFormGroup>
+                    <CLabel>Use Ballot</CLabel>
+                    <Field as={CSelect} name="ballot">
+                      <option value={true}>Yes</option>
+                      <option value={false}>No</option>
+                    </Field>
+                    <ErrorMessage name="ballot" component="div" className="text-danger" />
+                  </CFormGroup>
+                  <CFormGroup>
+                    <CLabel>Ballot Run Date</CLabel>
+                    <Field
+                      as={ReactDatePicker}
+                      className="form-control"
+                      name="ballotRunDate"
+                      selected={values.ballotRunDate}
+                      onChange={(value) => {
+                        setFieldValue("ballotRunDate", value);
+                      }}
+                    />
+                    <ErrorMessage name="ballotRunDate" component="div" className="text-danger" />
+                  </CFormGroup>
+                </>
+              ) : null}
               <CFormGroup>
                 <CButton color="primary" type="submit">
                   Create

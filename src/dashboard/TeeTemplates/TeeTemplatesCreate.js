@@ -104,7 +104,6 @@ function TeeTemplatesCreate() {
                             <CLabel>Template Type</CLabel>
                             <Field name="type" as={CSelect}>
                               <option value="normal">Normal</option>
-                              <option value="ballot">Ballot</option>
                               <option value="shotgun">Shotgun</option>
                               <option value="crossover">Cross Over</option>
                             </Field>

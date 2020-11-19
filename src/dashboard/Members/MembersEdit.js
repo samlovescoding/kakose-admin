@@ -26,6 +26,8 @@ import { useHistory, useParams } from "react-router-dom";
 // Custom Imports
 import DashboardLayout from "../../layouts/DashboardLayout";
 import axios from "../../services/axios";
+import Membership from "./Membership";
+import useUser from "../../hooks/useUser";
 
 function MemberProfilePhoto({ member, loadMember }) {
   const fileInputRef = useRef();
@@ -74,6 +76,7 @@ function MembersEdit() {
   const profilePhotoRef = useRef();
   const history = useHistory();
   const [memberTypes, setMemberTypes] = useState([]);
+  const [membership, setMembership] = useState();
   const [initialValues, setInitialValues] = useState();
   const [member, setMember] = useState(null);
 
@@ -85,9 +88,12 @@ function MembersEdit() {
     postalCode: yup.string().required(),
     phoneNumber: yup.string().required(),
     memberType: yup.string().required(),
+    dateOfBirth: yup.date().required().label("Date Of Birth"),
+    memberSince: yup.date().required().label("Member Since"),
   });
   const [error, setError] = useState(null);
   const { id } = useParams();
+  const { user } = useUser();
 
   // Effects and Events
   async function loadMemberTypes() {
@@ -108,7 +114,15 @@ function MembersEdit() {
 
   async function loadMember() {
     const response = await axios.get("/members/" + id);
+    let membership = null;
+    response.data.membership.forEach((_) => {
+      if (user.club === _.club._id) {
+        membership = _;
+      }
+    });
+
     setMember(response.data);
+    setMembership(membership);
     setInitialValues({
       name: response.data.name,
       email: response.data.email,
@@ -117,9 +131,11 @@ function MembersEdit() {
       postalCode: response.data.postalCode,
       phoneNumber: response.data.phoneNumber,
       memberType: {
-        label: response.data.memberType.name,
-        value: response.data.memberType._id,
+        label: membership.type.name,
+        value: membership.type._id,
       },
+      dateOfBirth: response.data.dateOfBirth,
+      memberSince: response.data.memberSince,
     });
   }
 
@@ -155,7 +171,6 @@ function MembersEdit() {
                     return (
                       <CForm onSubmit={handleSubmit}>
                         {error ? <CAlert color="danger">{error}</CAlert> : null}
-
                         <CFormGroup>
                           <CLabel>Name</CLabel>
                           <Field name="name" as={CInput} />
@@ -166,7 +181,6 @@ function MembersEdit() {
                           <Field name="email" type="email" as={CInput} />
                           <ErrorMessage name="email" component="div" className="text-danger" />
                         </CFormGroup>
-
                         <CFormGroup>
                           <CLabel>Sex</CLabel>
                           <Field name="sex" as={CSelect}>
@@ -191,23 +205,14 @@ function MembersEdit() {
                           <ErrorMessage component="div" className="text-danger" name="phoneNumber" />
                         </CFormGroup>
                         <CFormGroup>
-                          <CLabel>Member Type</CLabel>
-                          {/* <Field name="memberType" as={CSelect}>
-                            {memberTypes.map((memberType, key) => (
-                              <option key={key}>{memberType}</option>
-                            ))}
-                          </Field> */}
+                          <CLabel>Date of Birth</CLabel>
                           <Field
-                            as={RSelect}
-                            name="memberType"
-                            options={memberTypes}
-                            onChange={(type) => {
-                              setFieldValue("memberType", type.value);
-                            }}
-                            defaultValue={values.memberType}
-                            value={memberTypes[values["memberType"]]}
+                            name="dateOfBirth"
+                            type="date"
+                            as={CInput}
+                            value={new Date(values.dateOfBirth).toISOString().substring(0, 10)}
                           />
-                          <ErrorMessage component="div" className="text-danger" name="memberType" />
+                          <ErrorMessage component="div" className="text-danger" name="dateOfBirth" />
                         </CFormGroup>
                         <CFormGroup>
                           <CButton color={isSubmitting ? "secondary" : "primary"} type="submit" disabled={isSubmitting}>
@@ -223,6 +228,7 @@ function MembersEdit() {
               )}
             </CCardBody>
           </CCard>
+          {membership ? <Membership member={member} membership={membership} /> : null}
         </CCol>
 
         <CCol md="3">

@@ -53,6 +53,12 @@ const clubSidebar = [
   },
   {
     _tag: "CSidebarNavItem",
+    name: "Import Member",
+    to: "/members/import",
+    icon: "cil-user-plus",
+  },
+  {
+    _tag: "CSidebarNavItem",
     name: "Member Types",
     to: "/member-types",
     icon: "cil-people",

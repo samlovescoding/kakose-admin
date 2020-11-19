@@ -19,7 +19,7 @@ function BookingNew() {
   const { member } = useParams();
 
   const initialValues = {
-    day: "",
+    day: date2stamp(new Date()),
     slot: "",
     type: "locked",
   };
@@ -74,7 +74,7 @@ function BookingNew() {
       <CCard>
         <CCardBody>
           <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleCreate}>
-            {({ handleSubmit, values, setFieldValue }) => (
+            {({ handleSubmit, setFieldValue }) => (
               <CForm onSubmit={handleSubmit}>
                 {error ? <CAlert color="danger">{error}</CAlert> : null}
                 <CFormGroup>
@@ -124,7 +124,6 @@ function BookingNew() {
                   <CLabel>Booking Type</CLabel>
                   <Field as={CSelect} name="type">
                     <option value="locked">Locked</option>
-                    <option value="queue">Queue</option>
                     <option value="ballot">Ballot</option>
                   </Field>
                   <ErrorMessage component="div" className="text-danger" name="type" />

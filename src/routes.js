@@ -1,8 +1,6 @@
 import React from "react";
 
 // Bookings
-const BookingsToday = React.lazy(() => import("./dashboard/Bookings/BookingsToday"));
-const Bookings = React.lazy(() => import("./dashboard/Bookings/Bookings"));
 const BookingsNew = React.lazy(() => import("./dashboard/Bookings/BookingsNew"));
 
 // Clubs
@@ -13,6 +11,7 @@ const ClubsNew = React.lazy(() => import("./dashboard/Clubs/ClubsNew"));
 const Members = React.lazy(() => import("./dashboard/Members/Members"));
 const MembersEdit = React.lazy(() => import("./dashboard/Members/MembersEdit"));
 const MembersNew = React.lazy(() => import("./dashboard/Members/MembersNew"));
+const MembersImport = React.lazy(() => import("./dashboard/Members/MemberImport"));
 
 // Orders
 const Orders = React.lazy(() => import("./dashboard/Orders/Orders"));
@@ -45,18 +44,6 @@ const UsersNewAdmin = React.lazy(() => import("./dashboard/Users/UsersNewAdmin")
 
 const routes = [
   { path: "/", exact: true, name: "Home" },
-  {
-    path: "/bookings/today",
-    exact: true,
-    name: "Today Bookings",
-    component: BookingsToday,
-  },
-  {
-    path: "/bookings",
-    exact: true,
-    name: "Bookings History",
-    component: Bookings,
-  },
 
   // Tee Sheets
   {
@@ -103,6 +90,12 @@ const routes = [
     exact: true,
     name: "New Member",
     component: MembersNew,
+  },
+  {
+    path: "/members/import",
+    exact: true,
+    name: "Import Member",
+    component: MembersImport,
   },
   {
     path: "/members/:member/book",

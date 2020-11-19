@@ -18,6 +18,7 @@ import * as yup from "yup";
 // Custom Imports
 import DashboardLayout from "../../layouts/DashboardLayout";
 import axios from "../../services/axios";
+import SettingsBallot from "./SettingsBallot";
 
 function ClubSettings() {
   // Stateful hooks
@@ -35,16 +36,19 @@ function ClubSettings() {
     club_closing_time: yup.number().required().label("Closing Time"),
   });
 
+  const [club, setClub] = useState();
+
   // Effects and Events
   async function loadClubSettings() {
     try {
-      const { data: club } = await axios.get("/admin/club-settings");
+      const { data } = await axios.get("/admin/club-settings");
       setInitialValues({
-        tee_time_length: club.tee_time_length,
-        tee_time_max_bookings: club.tee_time_max_bookings,
-        club_opening_time: club.club_opening_time,
-        club_closing_time: club.club_closing_time,
+        tee_time_length: data.tee_time_length,
+        tee_time_max_bookings: data.tee_time_max_bookings,
+        club_opening_time: data.club_opening_time,
+        club_closing_time: data.club_closing_time,
       });
+      setClub(data);
     } catch (e) {
       console.error(e);
       setError(e.response.data.error.message);
@@ -138,6 +142,7 @@ function ClubSettings() {
                         />
                         <ErrorMessage name="club_closing_time" component="div" className="text-danger" />
                       </CFormGroup>
+                      <CFormGroup></CFormGroup>
                       <CFormGroup>
                         <CButton color="primary" type="submit" disabled={isSubmitting}>
                           Save
@@ -151,6 +156,13 @@ function ClubSettings() {
           </CCard>
         </CCol>
       </CRow>
+      {club ? (
+        <CRow>
+          <CCol>
+            <SettingsBallot club={club} />
+          </CCol>
+        </CRow>
+      ) : null}
     </DashboardLayout>
   );
 }

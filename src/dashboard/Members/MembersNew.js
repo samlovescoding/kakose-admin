@@ -21,12 +21,13 @@ import { useHistory } from "react-router-dom";
 // Custom Imports
 import axios from "../../services/axios";
 import DashboardLayout from "../../layouts/DashboardLayout";
+import useUser from "../../hooks/useUser";
 
 function NewMember() {
   // Stateful Hooks
   const profilePhotoRef = useRef();
   const history = useHistory();
-
+  const { user } = useUser();
   const [memberTypes, setMemberTypes] = useState([]);
 
   const initialValues = {
@@ -51,10 +52,10 @@ function NewMember() {
     address: yup.string().required().label("Address"),
     postalCode: yup.string().required().label("Postal Code"),
     phoneNumber: yup.string().required().label("Phone Number"),
-    memberType: yup.string().required().label("Member Type"),
     dateOfBirth: yup.date().required().label("Date Of Birth"),
-    memberSince: yup.date().required().label("Member Since"),
     profilePhotoCheck: yup.boolean().typeError("Profile Photo is a required file").required(),
+    memberType: yup.string().required().label("Member Type"),
+    memberSince: yup.date().required().label("Member Since"),
   });
 
   const [error, setError] = useState(null);
@@ -66,13 +67,24 @@ function NewMember() {
       Object.keys(values).forEach((key) => {
         payload.append(key, values[key]);
       });
+      payload.append(
+        "membership",
+        JSON.stringify({
+          type: values.memberType.value,
+          since: values.memberSince,
+          validity: 30,
+          expired: false,
+          banned: false,
+          club: user.club,
+        })
+      );
       payload.append("profilePhoto", profilePhotoRef.current.files[0]);
 
       let response = await axios.put("/members/register", payload);
       history.push("/members");
     } catch (e) {
       console.log(e);
-      setError(e.response.data.error);
+      setError(e.response.data.error.message);
     }
   }
 
@@ -163,21 +175,21 @@ function NewMember() {
                         <ErrorMessage component="div" className="text-danger" name="profilePhotoCheck" />
                       </CFormGroup>
                       <CFormGroup>
+                        <CLabel>Date of Birth</CLabel>
+                        <Field name="dateOfBirth" type="date" as={CInput} />
+                        <ErrorMessage component="div" className="text-danger" name="dateOfBirth" />
+                      </CFormGroup>
+                      <CFormGroup>
                         <CLabel>Member Type</CLabel>
                         <Field
                           name="memberType"
                           as={RSelect}
                           options={memberTypes}
                           onChange={(type) => {
-                            setFieldValue("memberType", type.value);
+                            setFieldValue("memberType", type);
                           }}
                         />
                         <ErrorMessage component="div" className="text-danger" name="memberType" />
-                      </CFormGroup>
-                      <CFormGroup>
-                        <CLabel>Date of Birth</CLabel>
-                        <Field name="dateOfBirth" type="date" as={CInput} />
-                        <ErrorMessage component="div" className="text-danger" name="dateOfBirth" />
                       </CFormGroup>
                       <CFormGroup>
                         <CLabel>Member Since</CLabel>

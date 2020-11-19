@@ -73,7 +73,7 @@ function NewClub() {
                         as={CInput}
                         onChange={(e) => {
                           setFieldValue("name", e.target.value);
-                          setFieldValue("slug", slugify(e.target.value));
+                          setFieldValue("slug", slugify(e.target.value).toLowerCase());
                         }}
                       />
                       <ErrorMessage name="name" component="div" className="text-danger" />

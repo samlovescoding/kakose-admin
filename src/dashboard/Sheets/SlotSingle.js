@@ -1,11 +1,14 @@
 import { CButton, CCard, CCardBody } from "@coreui/react";
 import React, { useEffect, useState } from "react";
+import useUser from "../../hooks/useUser";
 import axios from "../../services/axios";
 
 function SlotSingle({ sheet, slot, booking }) {
   // Stateful Hooks
   const [member, setMember] = useState();
+  const [membership, setMembership] = useState();
   const [deleted, setDeleted] = useState(false);
+  const { user } = useUser();
 
   // Effects and Events
   useEffect(() => {
@@ -18,6 +21,18 @@ function SlotSingle({ sheet, slot, booking }) {
       }
     })();
   }, []);
+
+  useEffect(() => {
+    if (member) {
+      let _ = null;
+      member.membership.forEach((ms) => {
+        if (ms.club._id === user.club) {
+          _ = ms;
+        }
+      });
+      setMembership(_);
+    }
+  }, [member]);
 
   async function deleteBooking(event) {
     const _member = event.target.getAttribute("member");
@@ -45,11 +60,13 @@ function SlotSingle({ sheet, slot, booking }) {
         {member ? (
           <>
             <div>{member.name}</div>
-            <div>
-              <strong>
-                {member.memberType.name} <small>Since {readableDate(member.memberSince)}</small>
-              </strong>
-            </div>
+            {membership ? (
+              <div>
+                <strong>
+                  {membership.type.name} <small>Since {readableDate(membership.since)}</small>
+                </strong>
+              </div>
+            ) : null}
             <div className="mt-2">
               <CButton color="danger" onClick={deleteBooking} sheet={sheet._id} member={member._id}>
                 Delete

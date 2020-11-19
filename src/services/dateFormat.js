@@ -1,8 +1,6 @@
 export default (x) => {
   const date = new Date(x);
-  return `${date.getUTCFullYear()}-${
-    date.getUTCMonth() < 10 ? 0 : ""
-  }${date.getUTCMonth()}-${
-    date.getUTCDate() < 10 ? 0 : ""
-  }${date.getUTCDate()}`;
+  return `${date.getFullYear()}-${date.getMonth() + 1 < 10 ? 0 : ""}${date.getMonth() + 1}-${
+    date.getDate() < 10 ? 0 : ""
+  }${date.getDate()}`;
 };
