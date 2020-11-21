@@ -20,6 +20,10 @@ import DashboardLayout from "../../layouts/DashboardLayout";
 import axios from "../../services/axios";
 import SettingsBallot from "./SettingsBallot";
 
+function SettingsMap() {
+  return <div>SettingsMap</div>;
+}
+
 function ClubSettings() {
   // Stateful hooks
   const [initialValues, setInitialValues] = useState({
@@ -113,12 +117,24 @@ function ClubSettings() {
                       <CFormGroup>
                         <CLabel>Tee Time Length (in minutes)</CLabel>
                         <Field as={CInput} name="tee_time_length" disabled />
-                        <ErrorMessage name="tee_time_length" component="div" className="text-danger" />
+                        <ErrorMessage
+                          name="tee_time_length"
+                          component="div"
+                          className="text-danger"
+                        />
                       </CFormGroup>
                       <CFormGroup>
                         <CLabel>Tee Time Max Bookings per Slot</CLabel>
-                        <Field as={CInput} name="tee_time_max_bookings" disabled />
-                        <ErrorMessage name="tee_time_max_bookings" component="div" className="text-danger" />
+                        <Field
+                          as={CInput}
+                          name="tee_time_max_bookings"
+                          disabled
+                        />
+                        <ErrorMessage
+                          name="tee_time_max_bookings"
+                          component="div"
+                          className="text-danger"
+                        />
                       </CFormGroup>
                       <CFormGroup>
                         <CLabel>Club Opening Time</CLabel>
@@ -129,7 +145,11 @@ function ClubSettings() {
                           onChange={setTimeFieldAsNumeric}
                           value={getTimeFieldAsNumeric("club_opening_time")}
                         />
-                        <ErrorMessage name="club_opening_time" component="div" className="text-danger" />
+                        <ErrorMessage
+                          name="club_opening_time"
+                          component="div"
+                          className="text-danger"
+                        />
                       </CFormGroup>
                       <CFormGroup>
                         <CLabel>Club Closing Time</CLabel>
@@ -140,11 +160,19 @@ function ClubSettings() {
                           onChange={setTimeFieldAsNumeric}
                           value={getTimeFieldAsNumeric("club_closing_time")}
                         />
-                        <ErrorMessage name="club_closing_time" component="div" className="text-danger" />
+                        <ErrorMessage
+                          name="club_closing_time"
+                          component="div"
+                          className="text-danger"
+                        />
                       </CFormGroup>
                       <CFormGroup></CFormGroup>
                       <CFormGroup>
-                        <CButton color="primary" type="submit" disabled={isSubmitting}>
+                        <CButton
+                          color="primary"
+                          type="submit"
+                          disabled={isSubmitting}
+                        >
                           Save
                         </CButton>
                       </CFormGroup>
@@ -157,11 +185,18 @@ function ClubSettings() {
         </CCol>
       </CRow>
       {club ? (
-        <CRow>
-          <CCol>
-            <SettingsBallot club={club} />
-          </CCol>
-        </CRow>
+        <>
+          <CRow>
+            <CCol>
+              <SettingsBallot club={club} />
+            </CCol>
+          </CRow>
+          <CRow>
+            <CCol>
+              <SettingsMap club={club} />
+            </CCol>
+          </CRow>
+        </>
       ) : null}
     </DashboardLayout>
   );

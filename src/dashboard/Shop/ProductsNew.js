@@ -1,5 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { CButton, CCard, CCardBody, CCardHeader, CCol, CForm, CFormGroup, CInput, CLabel, CRow } from "@coreui/react";
+import {
+  CButton,
+  CCard,
+  CCardBody,
+  CCardHeader,
+  CCol,
+  CForm,
+  CFormGroup,
+  CInput,
+  CLabel,
+  CRow,
+} from "@coreui/react";
 import { ErrorMessage, Field, Formik } from "formik";
 import CreatableSelect from "react-select/creatable";
 import * as yup from "yup";
@@ -25,7 +36,12 @@ function NewProduct() {
 
   const validationSchema = yup.object({
     name: yup.string().required().label("Name"),
-    price: yup.number().positive().required().label("Price"),
+    price: yup
+      .number()
+      .positive()
+      .required()
+      .label("Price")
+      .typeError("Please enter a number"),
     category: yup
       .array()
       .of(
@@ -44,9 +60,12 @@ function NewProduct() {
   // Effects and Events
   async function handleCreate(values) {
     try {
-      const response = await axios.post("/products", values);
-      history.push("/products");
-      console.log(response.data);
+      const {
+        data: {
+          product: { _id: id },
+        },
+      } = await axios.post("/products", values);
+      history.push("/products/" + id + "/edit");
     } catch (e) {
       console.error(e.response.data);
     }
@@ -68,18 +87,30 @@ function NewProduct() {
           <CCard>
             <CCardHeader>Add New Product to Pro Shop</CCardHeader>
             <CCardBody>
-              <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleCreate}>
+              <Formik
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={handleCreate}
+              >
                 {({ handleSubmit, setFieldValue }) => (
                   <CForm onSubmit={handleSubmit}>
                     <CFormGroup>
                       <CLabel>Name</CLabel>
                       <Field name="name" as={CInput} />
-                      <ErrorMessage name="name" />
+                      <ErrorMessage
+                        component="div"
+                        className="text-danger"
+                        name="name"
+                      />
                     </CFormGroup>
                     <CFormGroup>
                       <CLabel>Price</CLabel>
                       <Field name="price" as={CInput} />
-                      <ErrorMessage name="price" />
+                      <ErrorMessage
+                        component="div"
+                        className="text-danger"
+                        name="price"
+                      />
                     </CFormGroup>
                     <CFormGroup>
                       <CLabel>Category</CLabel>
@@ -90,17 +121,29 @@ function NewProduct() {
                         }}
                         options={productCategories}
                       />
-                      <ErrorMessage name="category" />
+                      <ErrorMessage
+                        component="div"
+                        className="text-danger"
+                        name="category"
+                      />
                     </CFormGroup>
                     <CFormGroup>
                       <CLabel>Stock</CLabel>
                       <Field name="quantity" as={CInput} />
-                      <ErrorMessage name="quantity" />
+                      <ErrorMessage
+                        component="div"
+                        className="text-danger"
+                        name="quantity"
+                      />
                     </CFormGroup>
                     <CFormGroup>
                       <CLabel>Units (Plural)</CLabel>
                       <Field name="unit" as={CInput} />
-                      <ErrorMessage name="unit" />
+                      <ErrorMessage
+                        component="div"
+                        className="text-danger"
+                        name="unit"
+                      />
                     </CFormGroup>
                     <CFormGroup>
                       <CButton color="primary" type="submit">

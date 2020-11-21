@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { CButton, CCard, CCardBody, CCardHeader, CCol, CContainer, CDataTable, CRow, CSwitch } from "@coreui/react";
+import {
+  CButton,
+  CCard,
+  CCardBody,
+  CCardHeader,
+  CCol,
+  CContainer,
+  CDataTable,
+  CRow,
+  CSwitch,
+} from "@coreui/react";
 import Slots from "./Slots";
 import dateFormat from "../../services/dateFormat";
 import SlotControls from "./SlotControls";
@@ -21,7 +31,10 @@ function SheetRenderer({ sheet, reloadSheet }) {
             <CCol>
               <div className="mb-5">
                 <h3>Sheet Information</h3>
-                <div>Type - {sheet.sheetType ? sheet.sheetType : sheet.template.type}</div>
+                <div>
+                  Type -{" "}
+                  {sheet.sheetType ? sheet.sheetType : sheet.template.type}
+                </div>
                 <div>Starting Time - {sheet.template.startTime}</div>
                 <div>Ending Time - {sheet.template.endTime}</div>
                 <div>Interval Time - {sheet.template.intervalTime} minutes</div>
@@ -64,7 +77,11 @@ function SheetRenderer({ sheet, reloadSheet }) {
               controls: (slot) => {
                 return (
                   <td>
-                    <SlotControls slot={slot} sheet={sheet} reloadSheet={reloadSheet} />
+                    <SlotControls
+                      slot={slot}
+                      sheet={sheet}
+                      reloadSheet={reloadSheet}
+                    />
                   </td>
                 );
               },
