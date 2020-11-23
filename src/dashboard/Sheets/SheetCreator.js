@@ -1,4 +1,13 @@
-import { CButton, CCard, CCardBody, CCardHeader, CForm, CFormGroup, CLabel, CSelect } from "@coreui/react";
+import {
+  CButton,
+  CCard,
+  CCardBody,
+  CCardHeader,
+  CForm,
+  CFormGroup,
+  CLabel,
+  CSelect,
+} from "@coreui/react";
 import { ErrorMessage, Field, Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import ReactDatePicker from "react-datepicker";
@@ -12,13 +21,13 @@ function SheetCreator({ date, reloadSheet }) {
 
   const [initialValues, setInitialValues] = useState({
     template: "",
-    ballot: "true",
+    ballot: false,
     ballotRunDate: date,
   });
 
   const validationSchema = yup.object({
     template: yup.string().required().label("Template"),
-    ballot: yup.string().oneOf(["true", "false"]).label("Using ballot"),
+    ballot: yup.boolean().label("Using ballot"),
     ballotRunDate: yup.date().label("Ballot run date"),
   });
 
@@ -67,13 +76,18 @@ function SheetCreator({ date, reloadSheet }) {
       }
 
       const otherData = {
-        ballot: values.ballot === "true" ? true : false,
+        ballot: values.ballot,
         ballotRunDate: values.ballotRunDate,
         sheetType: template.type,
         ballotEntries: [],
       };
-      const stamp = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
-      await axios.post("/sheets/" + stamp, { ...values, slots: createSlots(template), ...otherData });
+      const stamp =
+        date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
+      await axios.post("/sheets/" + stamp, {
+        ...values,
+        slots: createSlots(template),
+        ...otherData,
+      });
       reloadSheet();
     } catch (e) {
       alert(e.message);
@@ -124,7 +138,7 @@ function SheetCreator({ date, reloadSheet }) {
     if (club)
       setInitialValues({
         template: "",
-        ballot: club.ballot ? "true" : "false",
+        ballot: false,
         ballotRunDate: addDays(date, -club.ballotDays),
       });
   }, [club, date]);
@@ -132,7 +146,8 @@ function SheetCreator({ date, reloadSheet }) {
   return (
     <CCard>
       <CCardHeader>
-        Create Tee Sheet for {date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate()}
+        Create Tee Sheet for{" "}
+        {date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate()}
       </CCardHeader>
       <CCardBody>
         <Formik
@@ -162,17 +177,39 @@ function SheetCreator({ date, reloadSheet }) {
                     </option>
                   ))}
                 </Field>
-                <ErrorMessage name="template" component="div" className="text-danger" />
+                <ErrorMessage
+                  name="template"
+                  component="div"
+                  className="text-danger"
+                />
               </CFormGroup>
-              {club && club.ballot && club.ballot === true && addDays(date, -club.ballotDays) > new Date() ? (
+              {club &&
+              club.ballot &&
+              club.ballot === true &&
+              addDays(date, -club.ballotDays) > new Date() ? (
                 <>
                   <CFormGroup>
                     <CLabel>Use Ballot</CLabel>
-                    <Field as={CSelect} name="ballot">
-                      <option value={true}>Yes</option>
-                      <option value={false}>No</option>
+                    <Field
+                      as={CSelect}
+                      name="ballot"
+                      value={values.ballot === true ? "yes" : "no"}
+                      onChange={(e) => {
+                        if (e.target.value === "yes") {
+                          setFieldValue("ballot", true);
+                        } else {
+                          setFieldValue("ballot", false);
+                        }
+                      }}
+                    >
+                      <option value="yes">Yes</option>
+                      <option value="no">No</option>
                     </Field>
-                    <ErrorMessage name="ballot" component="div" className="text-danger" />
+                    <ErrorMessage
+                      name="ballot"
+                      component="div"
+                      className="text-danger"
+                    />
                   </CFormGroup>
                   <CFormGroup>
                     <CLabel>Ballot Run Date</CLabel>
@@ -185,7 +222,11 @@ function SheetCreator({ date, reloadSheet }) {
                         setFieldValue("ballotRunDate", value);
                       }}
                     />
-                    <ErrorMessage name="ballotRunDate" component="div" className="text-danger" />
+                    <ErrorMessage
+                      name="ballotRunDate"
+                      component="div"
+                      className="text-danger"
+                    />
                   </CFormGroup>
                 </>
               ) : null}

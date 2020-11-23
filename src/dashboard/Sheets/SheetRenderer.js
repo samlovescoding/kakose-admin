@@ -46,9 +46,6 @@ function SheetRenderer({ sheet, reloadSheet }) {
                   <h3>Ballot Information</h3>
                   <div>Ballot Run Date - {dateFormat(sheet.ballotRunDate)}</div>
                   <div>Ballot Entries - {sheet.ballotEntries.length}</div>
-                  <CButton color="primary" className="mt-2" onClick={runBallot}>
-                    Run Ballot
-                  </CButton>
                 </div>
               ) : null}
             </CCol>
