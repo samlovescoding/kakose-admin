@@ -1,7 +1,9 @@
 import React from "react";
 
 // Bookings
-const BookingsNew = React.lazy(() => import("./dashboard/Bookings/BookingsNew"));
+const BookingsNew = React.lazy(() =>
+  import("./dashboard/Bookings/BookingsNew")
+);
 
 // Clubs
 const Clubs = React.lazy(() => import("./dashboard/Clubs/Clubs"));
@@ -11,23 +13,37 @@ const ClubsNew = React.lazy(() => import("./dashboard/Clubs/ClubsNew"));
 const Members = React.lazy(() => import("./dashboard/Members/Members"));
 const MembersEdit = React.lazy(() => import("./dashboard/Members/MembersEdit"));
 const MembersNew = React.lazy(() => import("./dashboard/Members/MembersNew"));
-const MembersImport = React.lazy(() => import("./dashboard/Members/MemberImport"));
+const MembersImport = React.lazy(() =>
+  import("./dashboard/Members/MemberImport")
+);
 
 // Orders
 const Orders = React.lazy(() => import("./dashboard/Orders/Orders"));
 const OrdersToday = React.lazy(() => import("./dashboard/Orders/OrdersToday"));
 
 // Settings
-const SettingsClub = React.lazy(() => import("./dashboard/Settings/SettingsClub"));
-const SettingsProfile = React.lazy(() => import("./dashboard/Settings/SettingsProfile"));
+const SettingsClub = React.lazy(() =>
+  import("./dashboard/Settings/SettingsClub")
+);
+const SettingsProfile = React.lazy(() =>
+  import("./dashboard/Settings/SettingsProfile")
+);
 
 // Member Types
-const MemberTypes = React.lazy(() => import("./dashboard/MemberTypes/MemberTypes"));
-const MemberTypesNew = React.lazy(() => import("./dashboard/MemberTypes/MemberTypesNew"));
+const MemberTypes = React.lazy(() =>
+  import("./dashboard/MemberTypes/MemberTypes")
+);
+const MemberTypesNew = React.lazy(() =>
+  import("./dashboard/MemberTypes/MemberTypesNew")
+);
 
 // Tee Templates
-const TeeTemplates = React.lazy(() => import("./dashboard/TeeTemplates/TeeTemplates"));
-const TeeTemplatesCreate = React.lazy(() => import("./dashboard/TeeTemplates/TeeTemplatesCreate"));
+const TeeTemplates = React.lazy(() =>
+  import("./dashboard/TeeTemplates/TeeTemplates")
+);
+const TeeTemplatesCreate = React.lazy(() =>
+  import("./dashboard/TeeTemplates/TeeTemplatesCreate")
+);
 
 // Tee Sheets
 const Sheets = React.lazy(() => import("./dashboard/Sheets/Sheets"));
@@ -40,12 +56,20 @@ const ProductsEdit = React.lazy(() => import("./dashboard/Shop/ProductsEdit"));
 // Users
 const Users = React.lazy(() => import("./dashboard/Users/Users"));
 const UsersNew = React.lazy(() => import("./dashboard/Users/UsersNew"));
-const UsersNewAdmin = React.lazy(() => import("./dashboard/Users/UsersNewAdmin"));
+const UsersNewAdmin = React.lazy(() =>
+  import("./dashboard/Users/UsersNewAdmin")
+);
 
 const routes = [
   { path: "/", exact: true, name: "Home" },
 
   // Tee Sheets
+  {
+    path: "/dashboard",
+    exact: true,
+    name: "Tee Sheets",
+    component: Sheets,
+  },
   {
     path: "/sheets",
     exact: true,

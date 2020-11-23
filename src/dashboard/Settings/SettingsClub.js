@@ -18,10 +18,20 @@ import * as yup from "yup";
 // Custom Imports
 import DashboardLayout from "../../layouts/DashboardLayout";
 import axios from "../../services/axios";
+import MapContainer from "./MapContainer";
 import SettingsBallot from "./SettingsBallot";
 
 function SettingsMap() {
-  return <div>SettingsMap</div>;
+  return (
+    <CCard>
+      <CCardHeader>Map Settings</CCardHeader>
+      <CCardBody>
+        <div>
+          <MapContainer></MapContainer>
+        </div>
+      </CCardBody>
+    </CCard>
+  );
 }
 
 function ClubSettings() {
