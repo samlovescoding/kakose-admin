@@ -1,5 +1,10 @@
 import React, { Component, useContext, useState } from "react";
-import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch,
+} from "react-router-dom";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "./scss/style.scss";
@@ -21,8 +26,17 @@ const App = () => {
     <Router>
       <React.Suspense fallback={loading}>
         <Switch>
-          <Route exact path="/" name="Login Page" render={(props) => <Login {...props} />} />
-          <Route path="/" name="Home" render={(props) => <TheLayout {...props} />} />
+          <Route
+            exact
+            path="/"
+            name="Login Page"
+            render={(props) => <Login {...props} />}
+          />
+          <Route
+            path="/"
+            name="Home"
+            render={(props) => <TheLayout {...props} />}
+          />
         </Switch>
       </React.Suspense>
     </Router>
